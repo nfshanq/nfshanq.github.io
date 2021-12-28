@@ -449,7 +449,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/19/Linux/virt/guestfish/" class="post-title-link" itemprop="url">cloud-init</a>
+          <a href="/2021/12/19/Linux/virt/guestfish/" class="post-title-link" itemprop="url">guestfish</a>
         </h2>
 
         <div class="post-meta-container">
@@ -459,9 +459,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-12-19 11:27:40 / Modified: 19:38:00" itemprop="dateCreated datePublished" datetime="2021-12-19T11:27:40+08:00">2021-12-19</time>
+      <time title="Created: 2021-12-19 11:27:40" itemprop="dateCreated datePublished" datetime="2021-12-19T11:27:40+08:00">2021-12-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2021-12-28 17:02:15" itemprop="dateModified" datetime="2021-12-28T17:02:15+08:00">2021-12-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -854,7 +860,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2021-12-25 21:00:31" itemprop="dateModified" datetime="2021-12-25T21:00:31+08:00">2021-12-25</time>
+      <time title="Modified: 2021-12-28 17:02:46" itemprop="dateModified" datetime="2021-12-28T17:02:46+08:00">2021-12-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -900,6 +906,10 @@
 
 <p>or<br>only match arp request packets</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tc filter add dev pf0hpf parent ffff: protocol arp prio 1 flower arp_op request action mirred egress mirror dev p0 pipe action mirred egress mirror dev p1</span><br></pre></td></tr></table></figure>
+
+<p>802.1Q vlan</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tc filter add dev pf0hpf parent ffff: protocol 802.1Q prio 1 flower vlan_ethtype arp action mirred egress mirror dev p0 pipe action mirred egress mirror dev p1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 
 <p>ref: <a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man8/tc-flower.8.html">https://man7.org/linux/man-pages/man8/tc-flower.8.html</a></p>
 <h3 id="3-1-check-tc-filter-rule"><a href="#3-1-check-tc-filter-rule" class="headerlink" title="3.1 check tc filter rule"></a>3.1 check tc filter rule</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:/home/ubuntu<span class="comment"># tc -s -p filter ls dev pf0hpf parent ffff:</span></span><br><span class="line">filter ingress protocol arp pref 1 flower chain 0</span><br><span class="line">filter ingress protocol arp pref 1 flower chain 0 handle 0x1</span><br><span class="line">  dst_mac ff:ff:ff:ff:ff:ff</span><br><span class="line">  eth_type arp</span><br><span class="line">  not_in_hw</span><br><span class="line">	action order 1: mirred (Egress Mirror to device p0) pipe</span><br><span class="line"> 	index 3 ref 1 <span class="built_in">bind</span> 1 installed 1514 sec used 0 sec</span><br><span class="line"> 	Action statistics:</span><br><span class="line">	Sent 69644 bytes 1514 pkt (dropped 0, overlimits 0 requeues 0)</span><br><span class="line">	backlog 0b 0p requeues 0</span><br><span class="line"></span><br><span class="line">	action order 2: mirred (Egress Mirror to device p1) pipe</span><br><span class="line"> 	index 5 ref 1 <span class="built_in">bind</span> 1 installed 1514 sec used 0 sec</span><br><span class="line"> 	Action statistics:</span><br><span class="line">	Sent 69644 bytes 1514 pkt (dropped 0, overlimits 0 requeues 0)</span><br><span class="line">	backlog 0b 0p requeues 0</span><br><span class="line"></span><br><span class="line">filter ingress protocol LLDP pref 2 flower chain 0</span><br><span class="line">filter ingress protocol LLDP pref 2 flower chain 0 handle 0x1</span><br><span class="line">  dst_mac 01:80:c2:00:00:0e</span><br><span class="line">  src_mac 00:50:56:50:86:1d</span><br><span class="line">  eth_type 88cc</span><br><span class="line">  in_hw in_hw_count 1</span><br><span class="line">	action order 1: gact action drop</span><br><span class="line">	 random <span class="built_in">type</span> none pass val 0</span><br><span class="line">	 index 1 ref 1 <span class="built_in">bind</span> 1 installed 9 sec used 9 sec</span><br><span class="line">	Action statistics:</span><br><span class="line">	Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)</span><br><span class="line">	backlog 0b 0p requeues 0</span><br><span class="line">	cookie 45b15fb785436a48db7baabfebadfc89</span><br><span class="line">	no_percpu</span><br><span class="line"></span><br><span class="line">filter ingress protocol arp pref 5 flower chain 0</span><br><span class="line">filter ingress protocol arp pref 5 flower chain 0 handle 0x1</span><br><span class="line">  dst_mac ff:ff:ff:ff:ff:ff</span><br><span class="line">  src_mac 00:0c:29:72:e7:c4</span><br><span class="line">  eth_type arp</span><br><span class="line">  arp_sip 11.1.230.10</span><br><span class="line">  arp_tip 11.1.230.1</span><br><span class="line">  arp_op request</span><br><span class="line">  not_in_hw</span><br><span class="line">	action order 1: skbedit  ptype host pipe</span><br><span class="line">	 index 1 ref 1 <span class="built_in">bind</span> 1 installed 7 sec used 7 sec</span><br><span class="line">	Action statistics:</span><br><span class="line">	Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)</span><br><span class="line">	backlog 0b 0p requeues 0</span><br><span class="line"></span><br><span class="line">	action order 2: mirred (Ingress Mirror to device bf-lag) pipe</span><br><span class="line"> 	index 1 ref 1 <span class="built_in">bind</span> 1 installed 7 sec used 7 sec</span><br><span class="line"> 	Action statistics:</span><br><span class="line">	Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)</span><br><span class="line">	backlog 0b 0p requeues 0</span><br><span class="line">	cookie 688501ce534a508863c24fbf6f995a36</span><br><span class="line">	no_percpu</span><br><span class="line"></span><br><span class="line">	action order 3: mirred (Egress Redirect to device bond0) stolen</span><br><span class="line"> 	index 2 ref 1 <span class="built_in">bind</span> 1 installed 7 sec used 7 sec</span><br><span class="line"> 	Action statistics:</span><br><span class="line">	Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)</span><br><span class="line">	backlog 0b 0p requeues 0</span><br><span class="line">	cookie 688501ce534a508863c24fbf6f995a36</span><br><span class="line">	no_percpu</span><br></pre></td></tr></table></figure>
