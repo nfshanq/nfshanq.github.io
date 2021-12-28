@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"nfshanq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="create vm example123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596">
+<meta property="og:type" content="article">
+<meta property="og:title" content="create vm example by virt-install">
+<meta property="og:url" content="https://nfshanq.github.io/2021/12/19/Linux/virt/create-vm/index.html">
+<meta property="og:site_name" content="Xin Yu&#39;s Notes">
+<meta property="og:description" content="create vm example123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-12-19T03:27:40.000Z">
+<meta property="article:modified_time" content="2021-12-25T11:57:10.472Z">
+<meta property="article:author" content="Xin Yu">
+<meta property="article:tag" content="virt">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://nfshanq.github.io/2021/12/19/Linux/virt/create-vm/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://nfshanq.github.io/2021/12/19/Linux/virt/create-vm/","path":"2021/12/19/Linux/virt/create-vm/","title":"create vm example by virt-install"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>create vm example by virt-install | Xin Yu's Notes</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Xin Yu's Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Xin Yu's Notes</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-books"><a href="/books/" rel="section"><i class="fa fa-books fa-fw"></i>books</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#create-vm-example"><span class="nav-number">1.</span> <span class="nav-text">create vm example</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#resize-the-disk-size"><span class="nav-number">1.1.</span> <span class="nav-text">resize the disk size</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xin Yu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://nfshanq.github.io/2021/12/19/Linux/virt/create-vm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xin Yu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xin Yu's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          create vm example by virt-install
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-12-19 11:27:40" itemprop="dateCreated datePublished" datetime="2021-12-19T11:27:40+08:00">2021-12-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2021-12-25 19:57:10" itemprop="dateModified" datetime="2021-12-25T19:57:10+08:00">2021-12-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/Virt/" itemprop="url" rel="index"><span itemprop="name">Virt</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="create-vm-example"><a href="#create-vm-example" class="headerlink" title="create vm example"></a>create vm example</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">set</span> -e</span><br><span class="line"><span class="built_in">set</span> -x</span><br><span class="line">ID=<span class="variable">$1</span></span><br><span class="line"></span><br><span class="line">BACKFILE_IMG=<span class="string">&quot;./ubuntu-20.04-server-cloudimg-amd64.img&quot;</span></span><br><span class="line">TARGET_IMG=<span class="string">&quot;client-<span class="variable">$&#123;ID&#125;</span>.qcow2&quot;</span></span><br><span class="line">TARGET_IMG_SIZE=<span class="string">&quot;20G&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ADDFILES=<span class="string">&quot;http_test&quot;</span></span><br><span class="line"></span><br><span class="line">HOSTNAME=<span class="string">&quot;client-<span class="variable">$&#123;ID&#125;</span>&quot;</span></span><br><span class="line">IF1_NAME=<span class="string">&quot;enp1s0&quot;</span></span><br><span class="line">IF1_IPADDRESS=<span class="string">&quot;11.1.11.<span class="subst">$(( 20 + $&#123;ID&#125; )</span>)/24&quot;</span></span><br><span class="line">IF1_GATEWAY=<span class="string">&quot;11.1.11.1&quot;</span></span><br><span class="line"></span><br><span class="line">IF2_NAME=<span class="string">&quot;enp2s0&quot;</span></span><br><span class="line">IF2_IPADDRESS=<span class="string">&quot;192.168.122.<span class="subst">$(( 30 + $&#123;ID&#125; )</span>)/24&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## create a image from backfile</span></span><br><span class="line">qemu-img create -f qcow2 -b <span class="variable">$BACKFILE_IMG</span> <span class="variable">$TARGET_IMG</span></span><br><span class="line"><span class="comment">## resize target image size</span></span><br><span class="line">qemu-img resize <span class="variable">$TARGET_IMG</span> <span class="variable">$TARGET_IMG_SIZE</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## add user to image</span></span><br><span class="line"><span class="comment">#virt-customize -a $&#123;TARGET_IMG&#125;  --run-command &#x27;useradd lab -s /bin/bash -m -p &quot;&quot; -G sudo ; chage -d 99999 lab&#x27;</span></span><br><span class="line"><span class="comment">## set user password</span></span><br><span class="line"><span class="comment">#virt-customize -a $&#123;TARGET_IMG&#125; --password test:password:lab123</span></span><br><span class="line"><span class="comment">## set root password</span></span><br><span class="line">virt-customize -a <span class="variable">$&#123;TARGET_IMG&#125;</span> --root-password password:lab123</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## upload http_test and script</span></span><br><span class="line">http_test_script=$(mktemp /tmp/httpXXXXXXXX.sh)</span><br><span class="line">cat &gt; <span class="variable">$&#123;http_test_script&#125;</span> &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">#!/bin/bash</span></span><br><span class="line"><span class="string">set -x</span></span><br><span class="line"><span class="string">while true</span></span><br><span class="line"><span class="string">do</span></span><br><span class="line"><span class="string">  /http_test -c 11.1.10.10 -s 90000000</span></span><br><span class="line"><span class="string">  sleep  \$(( \$RANDOM % 1 ))</span></span><br><span class="line"><span class="string">done</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">virt-customize -a <span class="variable">$&#123;TARGET_IMG&#125;</span> --upload http_test:/http_test</span><br><span class="line">virt-customize -a <span class="variable">$&#123;TARGET_IMG&#125;</span> --upload <span class="variable">$&#123;http_test_script&#125;</span>:/http.sh</span><br><span class="line">virt-customize -a <span class="variable">$&#123;TARGET_IMG&#125;</span> --run-command <span class="string">&#x27;chmod +x /http.sh&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## run script on image on firstboot</span></span><br><span class="line">script=$(mktemp /tmp/scriptXXXXXXXXXX.sh)</span><br><span class="line">cat &gt; <span class="variable">$&#123;script&#125;</span> &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">#!/bin/bash</span></span><br><span class="line"><span class="string">ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key -q -N &quot;&quot;</span></span><br><span class="line"><span class="string">ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -q -N &quot;&quot;</span></span><br><span class="line"><span class="string">chmod 0600 /etc/ssh/ssh_host*</span></span><br><span class="line"><span class="string">echo PermitRootLogin yes &gt;&gt; /etc/ssh/sshd_config</span></span><br><span class="line"><span class="string">sed -i &quot;s/PasswordAuthentication no/PasswordAuthentication yes/g&quot; /etc/ssh/sshd_config</span></span><br><span class="line"><span class="string">hostnamectl set-hostname $&#123;HOSTNAME&#125;</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line">virt-customize -a <span class="variable">$&#123;TARGET_IMG&#125;</span> --firstboot <span class="variable">$&#123;script&#125;</span></span><br><span class="line">rm -rf <span class="variable">$&#123;script&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## create network config file</span></span><br><span class="line">network_cfg_tmp=$(mktemp /tmp/networkXXXXXXXX.yaml)</span><br><span class="line">cat &gt; <span class="variable">$&#123;network_cfg_tmp&#125;</span> &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">network:</span></span><br><span class="line"><span class="string">  ethernets:</span></span><br><span class="line"><span class="string">    $&#123;IF1_NAME&#125;:</span></span><br><span class="line"><span class="string">      dhcp4: false</span></span><br><span class="line"><span class="string">      addresses:</span></span><br><span class="line"><span class="string">      - $&#123;IF1_IPADDRESS&#125;</span></span><br><span class="line"><span class="string">      gateway4: $&#123;IF1_GATEWAY&#125;</span></span><br><span class="line"><span class="string">    $&#123;IF2_NAME&#125;:</span></span><br><span class="line"><span class="string">      addresses: [ $&#123;IF2_IPADDRESS&#125; ]</span></span><br><span class="line"><span class="string">  version: 2</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## add network config</span></span><br><span class="line">virt-customize -a <span class="variable">$&#123;TARGET_IMG&#125;</span> --run-command <span class="string">&#x27;rm -rf /etc/netplan/*&#x27;</span></span><br><span class="line">virt-customize -a <span class="variable">$&#123;TARGET_IMG&#125;</span> --upload <span class="variable">$&#123;network_cfg_tmp&#125;</span>:/etc/netplan/00-installer-config.yaml</span><br><span class="line">rm -rf <span class="variable">$&#123;network_cfg_tmp&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### add start script</span></span><br><span class="line">start_script=$(mktemp /tmp/startXXXXXXXX)</span><br><span class="line"></span><br><span class="line">cat &gt; <span class="variable">$&#123;start_script&#125;</span> &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Unit]</span></span><br><span class="line"><span class="string">Description=start http test</span></span><br><span class="line"><span class="string">After=network.target</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Service]</span></span><br><span class="line"><span class="string">ExecStart=bash -c /http.sh</span></span><br><span class="line"><span class="string">[Install]</span></span><br><span class="line"><span class="string">WantedBy=multi-user.target</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line">virt-customize -a <span class="variable">$&#123;TARGET_IMG&#125;</span> --upload <span class="variable">$&#123;start_script&#125;</span>:/lib/systemd/system/http_test.service</span><br><span class="line">virt-customize -a <span class="variable">$&#123;TARGET_IMG&#125;</span> --run-command <span class="string">&#x27;systemctl daemon-reload; systemctl enable http_test&#x27;</span></span><br><span class="line">rm -rf <span class="variable">$&#123;start_script&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## boot vm</span></span><br><span class="line">virt-install \</span><br><span class="line">    --name <span class="variable">$&#123;HOSTNAME&#125;</span> \</span><br><span class="line">    --ram=8192 \</span><br><span class="line">    --vcpus 4 \</span><br><span class="line">    --os-type linux \</span><br><span class="line">    --os-variant ubuntu20.04 \</span><br><span class="line">    --graphics none \</span><br><span class="line">    --disk /home/lab/cloud/<span class="variable">$&#123;TARGET_IMG&#125;</span>,device=disk,bus=virtio \</span><br><span class="line">    --network bridge=br11,model=virtio \</span><br><span class="line">    --network bridge=virbr0,model=virtio \</span><br><span class="line">    --noautoconsole \</span><br><span class="line">    --import</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="resize-the-disk-size"><a href="#resize-the-disk-size" class="headerlink" title="resize the disk size"></a>resize the disk size</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">growpart /dev/vda 1</span><br><span class="line">resize2fs /dev/vda1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/virt/" rel="tag"># virt</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/19/mellanox/bluefield/bluefield-bfb-install/" rel="prev" title="bluefield-bfb-install">
+                  <i class="fa fa-chevron-left"></i> bluefield-bfb-install
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/19/Linux/virt/virt-customize/" rel="next" title="virt customize">
+                  virt customize <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xin Yu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

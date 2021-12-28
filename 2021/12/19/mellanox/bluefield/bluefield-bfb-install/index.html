@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"nfshanq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="bluefield bfb installref: https:&#x2F;&#x2F;docs.nvidia.com&#x2F;doca&#x2F;sdk&#x2F;installation-guide&#x2F;index.html 1. install rshim and pvinstall rshim: 1dpkg -i rshim_2.0.6-3.ge329c69_amd64.deb  output: 1234567Selecting previ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bluefield-bfb-install">
+<meta property="og:url" content="https://nfshanq.github.io/2021/12/19/mellanox/bluefield/bluefield-bfb-install/index.html">
+<meta property="og:site_name" content="Xin Yu&#39;s Notes">
+<meta property="og:description" content="bluefield bfb installref: https:&#x2F;&#x2F;docs.nvidia.com&#x2F;doca&#x2F;sdk&#x2F;installation-guide&#x2F;index.html 1. install rshim and pvinstall rshim: 1dpkg -i rshim_2.0.6-3.ge329c69_amd64.deb  output: 1234567Selecting previ">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-12-19T03:21:03.000Z">
+<meta property="article:modified_time" content="2021-12-19T11:47:24.574Z">
+<meta property="article:author" content="Xin Yu">
+<meta property="article:tag" content="Smart NIC">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://nfshanq.github.io/2021/12/19/mellanox/bluefield/bluefield-bfb-install/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://nfshanq.github.io/2021/12/19/mellanox/bluefield/bluefield-bfb-install/","path":"2021/12/19/mellanox/bluefield/bluefield-bfb-install/","title":"bluefield-bfb-install"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>bluefield-bfb-install | Xin Yu's Notes</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Xin Yu's Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Xin Yu's Notes</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-books"><a href="/books/" rel="section"><i class="fa fa-books fa-fw"></i>books</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#bluefield-bfb-install"><span class="nav-number">1.</span> <span class="nav-text">bluefield bfb install</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-install-rshim-and-pv"><span class="nav-number">1.1.</span> <span class="nav-text">1. install rshim and pv</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-start-and-check-rshim-service"><span class="nav-number">1.2.</span> <span class="nav-text">2 start and check rshim service</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-check-rshim"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 check rshim</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-install-bfb-to-bluefield-NIC"><span class="nav-number">1.3.</span> <span class="nav-text">3 install bfb to bluefield NIC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-create-login-password"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 create login password</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-install-bfb-to-NIC"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 install bfb to NIC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-connect-bluefield-nic-by-console-port-open-another-session"><span class="nav-number">1.4.</span> <span class="nav-text">4 connect bluefield nic by console port (open another session)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-connect-bluefield-use-by-ssh"><span class="nav-number">1.5.</span> <span class="nav-text">5 connect bluefield use by ssh</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-config-tmfifo-net0"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1 config tmfifo_net0</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xin Yu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://nfshanq.github.io/2021/12/19/mellanox/bluefield/bluefield-bfb-install/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xin Yu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xin Yu's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          bluefield-bfb-install
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-12-19 11:21:03 / Modified: 19:47:24" itemprop="dateCreated datePublished" datetime="2021-12-19T11:21:03+08:00">2021-12-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Smart-NIC/" itemprop="url" rel="index"><span itemprop="name">Smart-NIC</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="bluefield-bfb-install"><a href="#bluefield-bfb-install" class="headerlink" title="bluefield bfb install"></a>bluefield bfb install</h1><p>ref: <a target="_blank" rel="noopener" href="https://docs.nvidia.com/doca/sdk/installation-guide/index.html">https://docs.nvidia.com/doca/sdk/installation-guide/index.html</a></p>
+<h2 id="1-install-rshim-and-pv"><a href="#1-install-rshim-and-pv" class="headerlink" title="1. install rshim and pv"></a>1. install rshim and pv</h2><p>install rshim:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpkg -i rshim_2.0.6-3.ge329c69_amd64.deb</span><br></pre></td></tr></table></figure>
+
+<p>output:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Selecting previously unselected package rshim.</span><br><span class="line">(Reading database ... 71752 files and directories currently installed.)</span><br><span class="line">Preparing to unpack rshim_2.0.6-3.ge329c69_amd64.deb ...</span><br><span class="line">Unpacking rshim (2.0.6-3.ge329c69) ...</span><br><span class="line">Setting up rshim (2.0.6-3.ge329c69) ...</span><br><span class="line">Created symlink /etc/systemd/system/multi-user.target.wants/rshim.service → /lib/systemd/system/rshim.service.</span><br><span class="line">Processing triggers <span class="keyword">for</span> man-db (2.9.1-1) ...</span><br></pre></td></tr></table></figure>
+
+<p>install pv:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install -y pv</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-start-and-check-rshim-service"><a href="#2-start-and-check-rshim-service" class="headerlink" title="2 start and check rshim service"></a>2 start and check rshim service</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">systemctl is-enabled rshim</span><br><span class="line">enabled</span><br><span class="line"></span><br><span class="line">systemctl start rshim</span><br><span class="line"></span><br><span class="line">systemctl status rshim</span><br><span class="line">● rshim.service - rshim driver <span class="keyword">for</span> BlueField SoC</span><br><span class="line">     Loaded: loaded (/lib/systemd/system/rshim.service; enabled; vendor preset: enabled)</span><br><span class="line">     Active: active (running) since Fri 2021-12-17 07:01:48 UTC; 14min ago</span><br><span class="line">       Docs: man:rshim(8)</span><br><span class="line">    Process: 10663 ExecStart=/usr/sbin/rshim <span class="variable">$OPTIONS</span> (code=exited, status=0/SUCCESS)</span><br><span class="line">   Main PID: 10666 (rshim)</span><br><span class="line">      Tasks: 6 (<span class="built_in">limit</span>: 629145)</span><br><span class="line">     Memory: 2.2M</span><br><span class="line">     CGroup: /system.slice/rshim.service</span><br><span class="line">             └─10666 /usr/sbin/rshim</span><br><span class="line"></span><br><span class="line">Dec 17 07:01:48 ubuntu2004-lab1 systemd[1]: Starting rshim driver <span class="keyword">for</span> BlueField SoC...</span><br><span class="line">Dec 17 07:01:48 ubuntu2004-lab1 systemd[1]: Started rshim driver <span class="keyword">for</span> BlueField SoC.</span><br><span class="line">Dec 17 07:01:48 ubuntu2004-lab1 rshim[10666]: Probing pcie-0000:3b:00.2</span><br><span class="line">Dec 17 07:01:48 ubuntu2004-lab1 rshim[10666]: create rshim pcie-0000:3b:00.2</span><br><span class="line">Dec 17 07:01:49 ubuntu2004-lab1 rshim[10666]: rshim0 attached</span><br><span class="line">Dec 17 07:08:03 ubuntu2004-lab1 rshim[10666]: rshim0 boot open</span><br><span class="line">Dec 17 07:08:13 ubuntu2004-lab1 rshim[10666]: rshim0 boot close</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-check-rshim"><a href="#2-1-check-rshim" class="headerlink" title="2.1 check rshim"></a>2.1 check rshim</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls -lh /dev/rshim0/</span></span><br><span class="line">total 0</span><br><span class="line">crw------- 1 root root 235, 0 Dec 17 07:01 boot</span><br><span class="line">crw------- 1 root root 234, 0 Dec 17 07:01 console</span><br><span class="line">crw------- 1 root root 511, 0 Dec 17 07:01 misc</span><br><span class="line">crw------- 1 root root 236, 0 Dec 17 07:01 rshim</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Dec 17 07:01:48 ubuntu2004-lab1 rshim[10666]: Probing pcie-0000:3b:00.2</span><br><span class="line">Dec 17 07:01:48 ubuntu2004-lab1 rshim[10666]: create rshim pcie-0000:3b:00.2</span><br><span class="line">Dec 17 07:01:49 ubuntu2004-lab1 rshim[10666]: rshim0 attached</span><br><span class="line">Dec 17 07:08:03 ubuntu2004-lab1 rshim[10666]: rshim0 boot open</span><br><span class="line">Dec 17 07:08:13 ubuntu2004-lab1 rshim[10666]: rshim0 boot close</span><br><span class="line"></span><br><span class="line">pcie-0000:3b:00.2  --&gt; rshim0</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-install-bfb-to-bluefield-NIC"><a href="#3-install-bfb-to-bluefield-NIC" class="headerlink" title="3 install bfb to bluefield NIC"></a>3 install bfb to bluefield NIC</h2><h3 id="3-1-create-login-password"><a href="#3-1-create-login-password" class="headerlink" title="3.1 create login password"></a>3.1 create login password</h3><p>The password is lab123 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;ubuntu_PASSWORD=&#x27;<span class="subst">$(openssl passwd -1 lab123)</span>&#x27;&quot;</span> | tee bf.cfg</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-install-bfb-to-NIC"><a href="#3-2-install-bfb-to-NIC" class="headerlink" title="3.2 install bfb to NIC"></a>3.2 install bfb to NIC</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bfb-install --rshim &lt;rshimN&gt; --bfb &lt;image_path.bfb&gt; --config bf.cfg</span><br></pre></td></tr></table></figure>
+
+<p>example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bfb-install --rshim rshim0 --bfb DOCA_v1.2.0_BlueField_OS_Ubuntu_20.04-5.4.0-1022-bluefield-5.5-1.0.3.2-3.8.0.11969-1.signed-aarch64.bfb --config bf.cfg</span><br></pre></td></tr></table></figure>
+
+<p>output:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Pushing bfb + cfg</span><br><span class="line"> 623MiB 0:00:54 [11.4MiB/s] [                                       &lt;=&gt;                                               ]</span><br><span class="line">Collecting BlueField booting status. Press Ctrl+C to stop…</span><br><span class="line"> INFO[BL2]: start</span><br><span class="line"> INFO[BL2]: DDR POST passed</span><br><span class="line"> INFO[BL2]: UEFI loaded</span><br><span class="line"> INFO[BL31]: start</span><br><span class="line"> INFO[BL31]: runtime</span><br><span class="line"> INFO[UEFI]: UPVS valid</span><br><span class="line"> INFO[UEFI]: eMMC init</span><br><span class="line"> INFO[UEFI]: eMMC probed</span><br><span class="line"> INFO[UEFI]: PMI: updates started</span><br><span class="line"> INFO[UEFI]: PMI: boot image update</span><br><span class="line"> INFO[UEFI]: PMI: updates completed, status 0</span><br><span class="line"> INFO[UEFI]: PCIe enum start</span><br><span class="line"> INFO[UEFI]: PCIe enum end</span><br><span class="line"> INFO[MISC]: Found bf.cfg</span><br><span class="line"> INFO[MISC]: Ubuntu installation started</span><br><span class="line"> INFO[MISC]: Installing OS image</span><br><span class="line"> INFO[MISC]: Changing the default password <span class="keyword">for</span> user ubuntu</span><br><span class="line"> INFO[MISC]: Installation finished</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-connect-bluefield-nic-by-console-port-open-another-session"><a href="#4-connect-bluefield-nic-by-console-port-open-another-session" class="headerlink" title="4 connect bluefield nic by console port (open another session)"></a>4 connect bluefield nic by console port (open another session)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">screen /dev/rshim0/console</span><br></pre></td></tr></table></figure>
+
+<p>console output:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">write counter to semaphore: Operation not permitted</span><br><span class="line">write counter to semaphore: Operation not permitted</span><br><span class="line">write counter to semaphore: Operation not permitted</span><br><span class="line">write counter to semaphore: Operation not permitted</span><br><span class="line">write counter to semaphore: Operation not permitted</span><br><span class="line">write counter to semaphore: Operation not permitted</span><br><span class="line">INFO: Changing the default password <span class="keyword">for</span> user ubuntu</span><br><span class="line">Boot0000* focal</span><br><span class="line">INFO: Installation finished</span><br><span class="line">INFO: Rebooting...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mellanox BlueField-2 A1 BL1 V1.1</span><br><span class="line">NOTICE:  BL2R: v2.2(release):3.8.0-25-ge146e67</span><br><span class="line">NOTICE:  BL2R: Built : 15:12:50, Nov 30 2021</span><br><span class="line">NOTICE:  BL2R built <span class="keyword">for</span> hw (ver 1)</span><br><span class="line">NOTICE:  BL2R: Booting BL2</span><br><span class="line">NOTICE:  BL2: v2.2(release):3.8.0-25-ge146e67</span><br><span class="line">NOTICE:  BL2: Built : 15:12:50, Nov 30 2021</span><br><span class="line">NOTICE:  BL2 built <span class="keyword">for</span> hw (ver 1)</span><br><span class="line">NOTICE:  Running as MBF2H332A-AECO system</span><br><span class="line">NOTICE:  No SPD detected on MSS0 DIMM0</span><br><span class="line">NOTICE:  No SPD detected on MSS0 DIMM1</span><br><span class="line">NOTICE:  Finished initializing DDR</span><br><span class="line">NOTICE:  DDR POST passed.</span><br><span class="line">NOTICE:  BL31: v2.2(release):3.8.0-25-ge146e67</span><br><span class="line">NOTICE:  BL31: Built : 15:12:50, Nov 30 2021</span><br><span class="line">NOTICE:  BL31 built <span class="keyword">for</span> hw (ver 1)</span><br><span class="line">UEFI firmware (version BlueField:3.8.0-34-gb1e3ae0 built at 15:15:10 on Nov 30 2021)</span><br><span class="line">Press &lt;ESC&gt; twice to enter UEFI menu</span><br><span class="line">3 seconds remaining</span><br><span class="line">2 seconds remaining</span><br><span class="line">1 seconds remaining</span><br><span class="line">0</span><br><span class="line">[    0.608703] rtc-efi rtc-efi: hctosys: unable to <span class="built_in">read</span> the hardware clock</span><br><span class="line">[   10.715782] mlx5_core 0000:03:00.0: mlx5_devlink_eswitch_lag_port_select_mode_set:4632:(pid 887): <span class="built_in">hash</span> based LAG is not supported by current device</span><br><span class="line">[   12.861453] mlx5_core 0000:03:00.1: mlx5_devlink_eswitch_lag_port_select_mode_set:4632:(pid 887): <span class="built_in">hash</span> based LAG is not supported by current device</span><br><span class="line"></span><br><span class="line">Ubuntu 20.04.3 LTS localhost hvc0</span><br><span class="line"></span><br><span class="line">localhost login: </span><br></pre></td></tr></table></figure>
+
+<p>The login username is ubuntu. The password is lab123</p>
+<h2 id="5-connect-bluefield-use-by-ssh"><a href="#5-connect-bluefield-use-by-ssh" class="headerlink" title="5 connect bluefield use by ssh"></a>5 connect bluefield use by ssh</h2><h3 id="5-1-config-tmfifo-net0"><a href="#5-1-config-tmfifo-net0" class="headerlink" title="5.1 config tmfifo_net0"></a>5.1 config tmfifo_net0</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip add add 192.168.100.1/30 dev tmfifo_net0</span><br></pre></td></tr></table></figure>
+
+<p>check interface</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu2004-lab1:~# ip address show tmfifo_net0</span><br><span class="line">16: tmfifo_net0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 1000</span><br><span class="line">    link/ether 00:1a:ca:ff:ff:02 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.100.1/30 scope global tmfifo_net0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::21a:caff:feff:ff02/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line">root@ubuntu2004-lab1:~# ping 192.168.100.2</span><br><span class="line">PING 192.168.100.2 (192.168.100.2) 56(84) bytes of data.</span><br><span class="line">64 bytes from 192.168.100.2: icmp_seq=1 ttl=64 time=2.46 ms</span><br></pre></td></tr></table></figure>
+
+<p>connect bluefield by ssh</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu2004-lab1:~# ssh -l ubuntu 192.168.100.2</span><br><span class="line">The authenticity of host &#x27;192.168.100.2 (192.168.100.2)&#x27; can&#x27;t be established.</span><br><span class="line">ECDSA key fingerprint is SHA256:QqO4i9YSGBI6pp1N8JJKqnTFokEEn1JVh+sdxcYPIb4.</span><br><span class="line">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span><br><span class="line">Warning: Permanently added &#x27;192.168.100.2&#x27; (ECDSA) to the list of known hosts.</span><br><span class="line">ubuntu@192.168.100.2&#x27;s password:</span><br><span class="line">Welcome to Ubuntu 20.04.3 LTS (GNU/Linux 5.4.0-1022-bluefield aarch64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/advantage</span><br><span class="line"></span><br><span class="line">  System information as of Tue Sep  7 18:44:49 UTC 2021</span><br><span class="line"></span><br><span class="line">  System load:  0.11              Processes:                    231</span><br><span class="line">  Usage of /:   5.1% of 57.10GB   Users logged in:              1</span><br><span class="line">  Memory usage: 5%                IPv4 address for tmfifo_net0: 192.168.100.2</span><br><span class="line">  Swap usage:   0%</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">0 updates can be applied immediately.</span><br><span class="line"></span><br><span class="line">Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Smart-NIC/" rel="tag"># Smart NIC</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/19/mellanox/bluefield/bluefield-double-arp/" rel="prev" title="bluefield nic double arp packets">
+                  <i class="fa fa-chevron-left"></i> bluefield nic double arp packets
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/19/Linux/virt/create-vm/" rel="next" title="create vm example by virt-install">
+                  create vm example by virt-install <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xin Yu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
