@@ -29,7 +29,7 @@
 <meta property="og:description" content="1. Prepere1.1enable hash mode 1mlxconfig -d &#x2F;dev&#x2F;mst&#x2F;&lt;device-name&gt; s LAG_RESOURCE_ALLOCATION&#x3D;1  Add&#x2F;edit the following field from &#x2F;etc&#x2F;mellanox&#x2F;mlnx-bf.conf as follows: 1LAG_HASH_MODE&#x3D;&quot;yes&amp;">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-12-19T03:21:03.000Z">
-<meta property="article:modified_time" content="2021-12-31T01:51:52.808Z">
+<meta property="article:modified_time" content="2021-12-31T06:24:11.793Z">
 <meta property="article:author" content="Xin Yu">
 <meta property="article:tag" content="Smart NIC">
 <meta name="twitter:card" content="summary">
@@ -135,18 +135,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -216,7 +216,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2021-12-31 09:51:52" itemprop="dateModified" datetime="2021-12-31T09:51:52+08:00">2021-12-31</time>
+      <time title="Modified: 2021-12-31 14:24:11" itemprop="dateModified" datetime="2021-12-31T14:24:11+08:00">2021-12-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -249,7 +249,12 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ovs-vsctl del-br ovsbr1</span><br><span class="line">ovs-vsctl del-br ovsbr2</span><br></pre></td></tr></table></figure>
 
 <p>delete sf interface</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sf_to_delete=$(mlnx-sf -a show | grep <span class="string">&quot;SF Index&quot;</span> | cut -d<span class="string">&quot; &quot;</span> -f3)</span><br><span class="line"><span class="keyword">for</span> sf <span class="keyword">in</span> <span class="variable">$sf_to_delete</span>; <span class="keyword">do</span></span><br><span class="line">	mlnx-sf -a delete -i <span class="string">&quot;<span class="variable">$sf</span>&quot;</span>;</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sf_to_delete=$(mlnx-sf -a show | grep <span class="string">&quot;SF Index&quot;</span> | cut -d<span class="string">&quot; &quot;</span> -f3)</span><br><span class="line"><span class="keyword">for</span> sf <span class="keyword">in</span> <span class="variable">$sf_to_delete</span>; <span class="keyword">do</span></span><br><span class="line">	mlnx-sf -a delete -i <span class="string">&quot;<span class="variable">$sf</span>&quot;</span>;</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>modify the config<br>file: /etc/mellanox/mlnx-sf.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:/home/ubuntu<span class="comment"># cat /etc/mellanox/mlnx-sf.conf</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#/sbin/mlnx-sf --action create --device 0000:03:00.0 --sfnum 0 --hwaddr 02:2a:e6:4d:e1:ad</span></span><br><span class="line"><span class="comment">#/sbin/mlnx-sf --action create --device 0000:03:00.1 --sfnum 0 --hwaddr 02:06:f3:ce:ad:5a</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="1-3-Hide-the-second-PF-on-host"><a href="#1-3-Hide-the-second-PF-on-host" class="headerlink" title="1.3 Hide the second PF on host"></a>1.3 Hide the second PF on host</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Hide the second PF on host</span></span><br><span class="line">	pf_hidden=$(mlxconfig -d <span class="string">&quot;<span class="variable">$mst_dev</span>&quot;</span>  q HIDE_PORT2_PF | grep True)</span><br><span class="line">	<span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$pf_hidden</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">echo</span> y | mlxconfig -d <span class="string">&quot;<span class="variable">$mst_dev</span>&quot;</span> s HIDE_PORT2_PF=True</span><br><span class="line">		<span class="built_in">echo</span> Please power cycle host server to hide the second unused host representative</span><br><span class="line">	<span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
 <p>Reboot the bluefield NIC</p>
 <h1 id="2-config-the-bond-interface"><a href="#2-config-the-bond-interface" class="headerlink" title="2. config the bond interface"></a>2. config the bond interface</h1><h2 id="2-1-command"><a href="#2-1-command" class="headerlink" title="2.1 command:"></a>2.1 command:</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ip link add bond0 <span class="built_in">type</span> bond</span><br><span class="line">ip link <span class="built_in">set</span> bond0 down</span><br><span class="line">ip link <span class="built_in">set</span> bond0 <span class="built_in">type</span> bond miimon 100 mode 4</span><br><span class="line">ip link <span class="built_in">set</span> p0 down</span><br><span class="line">ip link <span class="built_in">set</span> p1 down</span><br><span class="line">ip link <span class="built_in">set</span> p0 master bond0</span><br><span class="line">ip link <span class="built_in">set</span> p1 master bond0</span><br><span class="line">ip link <span class="built_in">set</span> p0 up</span><br><span class="line">ip link <span class="built_in">set</span> p1 up</span><br><span class="line">ip link <span class="built_in">set</span> bond0 up</span><br><span class="line">ovs-vsctl add-br bf-lag</span><br><span class="line">ovs-vsctl add-port bf-lag bond0</span><br><span class="line">ovs-vsctl add-port bf-lag pf0hpf</span><br><span class="line">ip link <span class="built_in">set</span> bf-lag up</span><br></pre></td></tr></table></figure>
@@ -335,7 +340,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -129,18 +129,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -169,6 +169,232 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://nfshanq.github.io/2022/02/07/Linux/openwrt/vxlan/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xin Yu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xin Yu's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/02/07/Linux/openwrt/vxlan/" class="post-title-link" itemprop="url">OpenWRT VxLAN</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-02-08 05:07:50" itemprop="dateCreated datePublished" datetime="2022-02-08T05:07:50+08:00">2022-02-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-02-09 10:15:14" itemprop="dateModified" datetime="2022-02-09T10:15:14+08:00">2022-02-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="1-Topology"><a href="#1-Topology" class="headerlink" title="1. Topology"></a>1. Topology</h1><p> <img src="./1644369044061.png" alt="1644369044061.png"></p>
+<p>GL.inet MT1300 is MT7621 chip</p>
+<p> <img src="./1644372818557.png" alt="1644372818557.png"></p>
+<h1 id="2-device-config"><a href="#2-device-config" class="headerlink" title="2. device config"></a>2. device config</h1><h2 id="2-1-QFX5100-config"><a href="#2-1-QFX5100-config" class="headerlink" title="2.1 QFX5100 config"></a>2.1 QFX5100 config</h2><h3 id="2-1-1-interface-config"><a href="#2-1-1-interface-config" class="headerlink" title="2.1.1 interface config"></a>2.1.1 interface config</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># L2 interface </span></span><br><span class="line"><span class="built_in">set</span> xe-0/0/0 unit 0 family ethernet-switching interface-mode access</span><br><span class="line"><span class="built_in">set</span> xe-0/0/0 unit 0 family ethernet-switching vlan members vlan-vxlan10</span><br><span class="line"></span><br><span class="line"><span class="comment"># connect L2 switch</span></span><br><span class="line"><span class="built_in">set</span> xe-0/0/37 unit 0 family ethernet-switching interface-mode trunk</span><br><span class="line"><span class="built_in">set</span> xe-0/0/37 unit 0 family ethernet-switching vlan members vlan81</span><br><span class="line"></span><br><span class="line"><span class="comment"># vtep source interface</span></span><br><span class="line"><span class="built_in">set</span> irb unit 81 family inet address 11.81.1.1/24</span><br><span class="line"><span class="built_in">set</span> lo0 unit 0 family inet address 11.1.1.1/32</span><br></pre></td></tr></table></figure>
+
+<p>vlan-vxlan10 is vxlan vlan</p>
+<h3 id="2-1-2-protocol-config"><a href="#2-1-2-protocol-config" class="headerlink" title="2.1.2 protocol config"></a>2.1.2 protocol config</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> routing-options router-id 11.1.1.1</span><br><span class="line"><span class="built_in">set</span> routing-options autonomous-system 65000</span><br><span class="line"><span class="built_in">set</span> protocols bgp group evpn <span class="built_in">type</span> internal</span><br><span class="line"><span class="built_in">set</span> protocols bgp group evpn local-address 11.1.1.1</span><br><span class="line"><span class="built_in">set</span> protocols bgp group evpn family evpn signaling</span><br><span class="line"><span class="built_in">set</span> protocols bgp group evpn allow 11.81.1.0/24</span><br><span class="line"><span class="built_in">set</span> protocols bgp group evpn allow 11.82.1.0/24</span><br><span class="line"><span class="built_in">set</span> protocols evpn encapsulation vxlan</span><br><span class="line"><span class="built_in">set</span> protocols evpn vni-options vni 10 vrf-target target:65000:10</span><br><span class="line"><span class="built_in">set</span> protocols evpn extended-vni-list 10</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-3-switch-and-vlan-config"><a href="#2-1-3-switch-and-vlan-config" class="headerlink" title="2.1.3 switch and vlan config"></a>2.1.3 switch and vlan config</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> switch-options vtep-source-interface lo0.0</span><br><span class="line"><span class="built_in">set</span> switch-options route-distinguisher 11.1.1.1:10</span><br><span class="line"><span class="built_in">set</span> switch-options vrf-target target:65000:10</span><br><span class="line"><span class="built_in">set</span> vlans vlan-vxlan10 vlan-id 10</span><br><span class="line"><span class="built_in">set</span> vlans vlan-vxlan10 vxlan vni 10</span><br><span class="line"><span class="built_in">set</span> vlans vlan-vxlan10 vxlan ingress-node-replication</span><br><span class="line"><span class="built_in">set</span> vlans vlan81 description <span class="string">&quot;openwrt test&quot;</span></span><br><span class="line"><span class="built_in">set</span> vlans vlan81 vlan-id 81</span><br><span class="line"><span class="built_in">set</span> vlans vlan81 l3-interface irb.81</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-OpenWRT-config"><a href="#2-2-OpenWRT-config" class="headerlink" title="2.2 OpenWRT config"></a>2.2 OpenWRT config</h2><h3 id="2-2-1-FRR-config"><a href="#2-2-1-FRR-config" class="headerlink" title="2.2.1 FRR config"></a>2.2.1 FRR config</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">router bgp 65000</span><br><span class="line"> bgp router-id 11.81.1.2</span><br><span class="line"> neighbor evpn peer-group</span><br><span class="line"> neighbor evpn remote-as internal</span><br><span class="line"> neighbor evpn update-source wan</span><br><span class="line"> neighbor 11.1.1.1 peer-group evpn</span><br><span class="line"> !</span><br><span class="line"> address-family l2vpn evpn</span><br><span class="line">  neighbor evpn activate</span><br><span class="line">  advertise-all-vni</span><br><span class="line">  advertise ipv4 unicast</span><br><span class="line"> exit-address-family</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="2-2-2-vxlan-interface-config"><a href="#2-2-2-vxlan-interface-config" class="headerlink" title="2.2.2 vxlan interface config"></a>2.2.2 vxlan interface config</h3><p>The OpenWRT config (/etc/config/network) must need  vxlan peeraddr.</p>
+<p>ref: <a target="_blank" rel="noopener" href="https://openwrt.org/docs/guide-user/network/tunneling_interface_protocols">https://openwrt.org/docs/guide-user/network/tunneling_interface_protocols</a></p>
+<p> <img src="./1644369624624.png" alt="1644369624624.png"></p>
+<p>so, use hotplug to add the vxlan interface.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root@OpenWrt:~<span class="comment"># cat /etc/hotplug.d/iface/50-vxlan</span></span><br><span class="line"><span class="comment">#!/bin/sh</span></span><br><span class="line"></span><br><span class="line">[ <span class="string">&quot;<span class="variable">$ACTION</span>&quot;</span> == <span class="string">&quot;ifup&quot;</span> ] &amp;&amp; [ <span class="string">&quot;<span class="variable">$INTERFACE</span>&quot;</span> == <span class="string">&quot;wan&quot;</span> ] &amp;&amp; &#123;</span><br><span class="line"></span><br><span class="line">WAN_IFNAME=<span class="string">&#x27;wan@eth0&#x27;</span></span><br><span class="line">WAN_IP=<span class="string">&quot;<span class="subst">$(ip -br a | grep <span class="string">&quot;<span class="variable">$WAN_IFNAME</span>&quot;</span> | grep -Eo &#x27;[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;&#x27;)</span>&quot;</span></span><br><span class="line"></span><br><span class="line">ip link del vxlan1</span><br><span class="line">ip link add vxlan1 <span class="built_in">type</span> vxlan id 10 <span class="built_in">local</span> <span class="variable">$&#123;WAN_IP&#125;</span> dstport 4789</span><br><span class="line">ip link <span class="built_in">set</span> vxlan1 master br-lan</span><br><span class="line">ip link <span class="built_in">set</span> vxlan1 up</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-3-firewall-config"><a href="#2-2-3-firewall-config" class="headerlink" title="2.2.3 firewall config"></a>2.2.3 firewall config</h3><p>The OpenWRT default firewall is disable the VxLAN traffic.  so we need add the firewall rule. JUNOS will use 4789 to connect the VxLAN. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># … in the /etc/config/firewall</span></span><br><span class="line">config rule</span><br><span class="line">        option name             Allow-VxLAN</span><br><span class="line">        option src              wan</span><br><span class="line">        option dest_port        4789</span><br><span class="line">        option proto            udp</span><br><span class="line">        option target           ACCEPT</span><br></pre></td></tr></table></figure>
+
+<p>if we need another BGP speaker to connect active.  we need to add the BGP 179(TCP) port in the firewall rule. In my use case, the JUNOS BGP speaker is passive mode.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># … in the /etc/config/firewall</span></span><br><span class="line">config rule</span><br><span class="line">        option name             Allow-BGP</span><br><span class="line">        option src              wan</span><br><span class="line">        option dest_port        179</span><br><span class="line">        option proto            tcp</span><br><span class="line">        option target           ACCEPT</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="./1644370121708.png" alt="1644370121708.png"></p>
+<h1 id="3-vxlan-evpn-status"><a href="#3-vxlan-evpn-status" class="headerlink" title="3. vxlan evpn status"></a>3. vxlan evpn status</h1><h2 id="3-1-QFX5100"><a href="#3-1-QFX5100" class="headerlink" title="3.1 QFX5100"></a>3.1 QFX5100</h2><h3 id="3-1-1-BGP-control-plane"><a href="#3-1-1-BGP-control-plane" class="headerlink" title="3.1.1 BGP (control plane)"></a>3.1.1 BGP (control plane)</h3><p>BGP peer is evpn.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">lab@qfx5100-48s-6q&gt; show bgp summary</span><br><span class="line">Threading mode: BGP I/O</span><br><span class="line">Groups: 1 Peers: 1 Down peers: 0</span><br><span class="line">Unconfigured peers: 1</span><br><span class="line">Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending</span><br><span class="line">bgp.evpn.0</span><br><span class="line">                       2          2          0          0          0          0</span><br><span class="line">Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn State|<span class="comment">#Active/Received/Accepted/Damped...</span></span><br><span class="line">11.81.1.2             65000         80         70       0       0       28:40 Establ</span><br><span class="line">  __default_evpn__.evpn.0: 0/0/0/0</span><br><span class="line">  bgp.evpn.0: 2/2/2/0</span><br><span class="line">  default-switch.evpn.0: 2/2/2/0</span><br></pre></td></tr></table></figure>
+
+<p>BGP evpn NLRI</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">lab@qfx5100-48s-6q&gt; show route table bgp.evpn.0</span><br><span class="line"></span><br><span class="line">bgp.evpn.0: 6 destinations, 6 routes (6 active, 0 holddown, 0 hidden)</span><br><span class="line">+ = Active Route, - = Last Active, * = Both</span><br><span class="line"></span><br><span class="line">2:11.1.1.1:10::10::e4:43:4b:f6:c5:56/304 MAC/IP</span><br><span class="line">                   *[EVPN/170] 00:39:07</span><br><span class="line">                       Indirect</span><br><span class="line">2:11.81.1.2:2::0::e4:43:4b:f6:c5:75/304 MAC/IP</span><br><span class="line">                   *[BGP/170] 00:45:24, localpref 100</span><br><span class="line">                      AS path: I, validation-state: unverified</span><br><span class="line">                    &gt;  to 11.81.1.2 via irb.81</span><br><span class="line">2:11.1.1.1:10::10::e4:43:4b:f6:c5:56::192.168.8.100/304 MAC/IP</span><br><span class="line">                   *[EVPN/170] 00:19:13</span><br><span class="line">                       Indirect</span><br><span class="line">2:11.81.1.2:2::0::e4:43:4b:f6:c5:75::192.168.8.10/304 MAC/IP</span><br><span class="line">                   *[BGP/170] 00:00:19, localpref 100</span><br><span class="line">                      AS path: I, validation-state: unverified</span><br><span class="line">                    &gt;  to 11.81.1.2 via irb.81</span><br><span class="line">3:11.1.1.1:10::10::11.1.1.1/248 IM</span><br><span class="line">                   *[EVPN/170] 00:46:26</span><br><span class="line">                       Indirect</span><br><span class="line">3:11.81.1.2:2::0::11.81.1.2/248 IM</span><br><span class="line">                   *[BGP/170] 00:45:24, localpref 100</span><br><span class="line">                      AS path: I, validation-state: unverified</span><br><span class="line">                    &gt;  to 11.81.1.2 via irb.81</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>One evpn BGP NLRI extensive information.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">lab@qfx5100-48s-6q&gt; show route table bgp.evpn.0 extensive evpn-mac-address e4:43:4b:f6:c5:75</span><br><span class="line"></span><br><span class="line">bgp.evpn.0: 5 destinations, 5 routes (5 active, 0 holddown, 0 hidden)</span><br><span class="line">2:11.81.1.2:2::0::e4:43:4b:f6:c5:75/304 MAC/IP (1 entry, 0 announced)</span><br><span class="line">        *BGP    Preference: 170/-101</span><br><span class="line">                Route Distinguisher: 11.81.1.2:2</span><br><span class="line">                Next hop <span class="built_in">type</span>: Indirect, Next hop index: 0</span><br><span class="line">                Address: 0xccd60b0</span><br><span class="line">                Next-hop reference count: 4</span><br><span class="line">                Source: 11.81.1.2</span><br><span class="line">                Protocol next hop: 11.81.1.2</span><br><span class="line">                Indirect next hop: 0x2 no-forward INH Session ID: 0x0</span><br><span class="line">                State: &lt;Active Int Ext&gt;</span><br><span class="line">                Local AS: 65000 Peer AS: 65000</span><br><span class="line">                Age: 17:50:15 	Metric2: 0</span><br><span class="line">                Validation State: unverified</span><br><span class="line">                Task: BGP_65000.11.81.1.2+43211</span><br><span class="line">                AS path: I</span><br><span class="line">                Communities: target:65000:10 encapsulation:vxlan(0x8)</span><br><span class="line">                Import Accepted</span><br><span class="line">                Route Label: 10</span><br><span class="line">                ESI: 00:00:00:00:00:00:00:00:00:00</span><br><span class="line">                Localpref: 100</span><br><span class="line">                Router ID: 11.81.1.2</span><br><span class="line">                Secondary Tables: default-switch.evpn.0</span><br><span class="line">                Indirect next hops: 1</span><br><span class="line">                        Protocol next hop: 11.81.1.2</span><br><span class="line">                        Indirect next hop: 0x2 no-forward INH Session ID: 0x0</span><br><span class="line">                        Indirect path forwarding next hops: 1</span><br><span class="line">                                Next hop <span class="built_in">type</span>: Router</span><br><span class="line">                                Next hop: 11.81.1.2 via irb.81</span><br><span class="line">                                Session Id: 0x0</span><br><span class="line">				11.81.1.0/24 Originating RIB: inet.0</span><br><span class="line">				  Node path count: 1</span><br><span class="line">				  Forwarding nexthops: 1</span><br><span class="line">					Next hop <span class="built_in">type</span>: Interface</span><br><span class="line">					Nexthop: via irb.81</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1-2-forwarding-plane"><a href="#3-1-2-forwarding-plane" class="headerlink" title="3.1.2 forwarding plane"></a>3.1.2 forwarding plane</h3><p>mac-ip table</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;master:0&#125;</span><br><span class="line">lab@qfx5100-48s-6q&gt; show ethernet-switching mac-ip-table</span><br><span class="line"></span><br><span class="line">MAC IP flags  (S - Static, D - Dynamic, L - Local , R - Remote, Lp - Local Proxy,</span><br><span class="line">               Rp - Remote Proxy, K - Kernel, RT - Dest Route, AD - Advt to remote,</span><br><span class="line">               RE - Re-ARP/ND, RO - Router, OV - Override)</span><br><span class="line"> Routing instance : default-switch</span><br><span class="line"> Bridging domain : vlan-vxlan10</span><br><span class="line">   IP                           MAC                  Flags             Logical            Active</span><br><span class="line">   address                      address                                Interface          <span class="built_in">source</span></span><br><span class="line">   192.168.8.100                e4:43:4b:f6:c5:56    DL,K,AD           xe-0/0/0.0</span><br><span class="line">   192.168.8.10                 e4:43:4b:f6:c5:75    DR,K              vtep.32769         11.81.1.2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>MAC table:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;master:0&#125;</span><br><span class="line">lab@qfx5100-48s-6q&gt; show ethernet-switching table</span><br><span class="line"></span><br><span class="line">MAC flags (S - static MAC, D - dynamic MAC, L - locally learned, P - Persistent static</span><br><span class="line">           SE - statistics enabled, NM - non configured MAC, R - remote PE MAC, O - ovsdb MAC)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Ethernet switching table : 3 entries, 3 learned</span><br><span class="line">Routing instance : default-switch</span><br><span class="line">   Vlan                MAC                 MAC      Logical                Active</span><br><span class="line">   name                address             flags    interface              <span class="built_in">source</span></span><br><span class="line">   vlan-vxlan10        e4:43:4b:f6:c5:56   D        xe-0/0/0.0</span><br><span class="line">   vlan-vxlan10        e4:43:4b:f6:c5:75   D        vtep.32769             11.81.1.2</span><br><span class="line">   vlan81              94:83:c4:16:51:44   D        xe-0/0/37.0</span><br><span class="line"></span><br><span class="line">&#123;master:0&#125;</span><br></pre></td></tr></table></figure>
+
+<p>forwarding-table detail:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;master:0&#125;</span><br><span class="line">lab@qfx5100-48s-6q&gt; show route forwarding-table family ethernet-switching matching e4:43:4b:f6:c5:75/48 extensive</span><br><span class="line">Routing table: default-switch.evpn-vxlan [Index 7]</span><br><span class="line">Bridging domain: vlan-vxlan10.evpn-vxlan [Index 3]</span><br><span class="line">VPLS:</span><br><span class="line">Enabled protocols: Bridging, ACKed by all peers, EVPN VXLAN,</span><br><span class="line"></span><br><span class="line">Destination:  e4:43:4b:f6:c5:75/48</span><br><span class="line">  Learn VLAN: 0                        Route <span class="built_in">type</span>: user</span><br><span class="line">  Route reference: 0                   Route interface-index: 566</span><br><span class="line">  Multicast RPF nh index: 0</span><br><span class="line">  P2mpidx: 0</span><br><span class="line">  IFL generation: 131                  Epoch: 0</span><br><span class="line">  Sequence Number: 0                   Learn Mask: 0x4000000000000000000000000000000000000000</span><br><span class="line">  L2 Flags: control_dyn</span><br><span class="line">  Flags: sent to PFE</span><br><span class="line">  Nexthop:</span><br><span class="line">  Next-hop <span class="built_in">type</span>: composite             Index: 1742     Reference: 5</span><br><span class="line">  Next-hop <span class="built_in">type</span>: indirect              Index: 524286   Reference: 3</span><br><span class="line">  Nexthop: 11.81.1.2</span><br><span class="line">  Next-hop <span class="built_in">type</span>: unicast               Index: 1741     Reference: 4</span><br><span class="line">  Next-hop interface: xe-0/0/37.0</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="3-2-OpenWRT"><a href="#3-2-OpenWRT" class="headerlink" title="3.2 OpenWRT"></a>3.2 OpenWRT</h2><h3 id="3-2-1-BGP"><a href="#3-2-1-BGP" class="headerlink" title="3.2.1 BGP"></a>3.2.1 BGP</h3><p>BGP peer</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># frr command</span></span><br><span class="line">OpenWrt<span class="comment"># show bgp l2vpn evpn summ</span></span><br><span class="line">BGP router identifier 11.81.1.2, <span class="built_in">local</span> AS number 65000 vrf-id 0</span><br><span class="line">BGP table version 0</span><br><span class="line">RIB entries 3, using 384 bytes of memory</span><br><span class="line">Peers 1, using 10896 bytes of memory</span><br><span class="line">Peer groups 1, using 32 bytes of memory</span><br><span class="line"></span><br><span class="line">Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt</span><br><span class="line">11.1.1.1        4      65000      3090      3048        0    0    0 17:27:52            3        3</span><br><span class="line"></span><br><span class="line">Total number of neighbors 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>evpn BGP NLRI</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># frr command</span></span><br><span class="line">OpenWrt<span class="comment"># show bgp l2vpn evpn</span></span><br><span class="line">BGP table version is 15, <span class="built_in">local</span> router ID is 11.81.1.2</span><br><span class="line">Status codes: s suppressed, d damped, h <span class="built_in">history</span>, * valid, &gt; best, i - internal</span><br><span class="line">Origin codes: i - IGP, e - EGP, ? - incomplete</span><br><span class="line">EVPN type-1 prefix: [1]:[ESI]:[EthTag]:[IPlen]:[VTEP-IP]</span><br><span class="line">EVPN type-2 prefix: [2]:[EthTag]:[MAClen]:[MAC]:[IPlen]:[IP]</span><br><span class="line">EVPN type-3 prefix: [3]:[EthTag]:[IPlen]:[OrigIP]</span><br><span class="line">EVPN type-4 prefix: [4]:[ESI]:[IPlen]:[OrigIP]</span><br><span class="line">EVPN type-5 prefix: [5]:[EthTag]:[IPlen]:[IP]</span><br><span class="line"></span><br><span class="line">   Network          Next Hop            Metric LocPrf Weight Path</span><br><span class="line">Route Distinguisher: 11.1.1.1:10</span><br><span class="line">*&gt;i[2]:[10]:[48]:[e4:43:4b:f6:c5:56]</span><br><span class="line">                    11.1.1.1                      100      0 i</span><br><span class="line">                    RT:65000:10 ET:8</span><br><span class="line">*&gt;i[2]:[10]:[48]:[e4:43:4b:f6:c5:56]:[32]:[192.168.8.100]</span><br><span class="line">                    11.1.1.1                      100      0 i</span><br><span class="line">                    RT:65000:10 ET:8</span><br><span class="line">*&gt;i[3]:[10]:[32]:[11.1.1.1]</span><br><span class="line">                    11.1.1.1                      100      0 i</span><br><span class="line">                    RT:65000:10 ET:8</span><br><span class="line">Route Distinguisher: 11.81.1.2:2</span><br><span class="line">*&gt; [2]:[0]:[48]:[e4:43:4b:f6:c5:75]</span><br><span class="line">                    11.81.1.2                          32768 i</span><br><span class="line">                    ET:8 RT:65000:10</span><br><span class="line">*&gt; [2]:[0]:[48]:[e4:43:4b:f6:c5:75]:[32]:[192.168.8.10]</span><br><span class="line">                    11.81.1.2                          32768 i</span><br><span class="line">                    ET:8 RT:65000:10</span><br><span class="line">*&gt; [3]:[0]:[32]:[11.81.1.2]</span><br><span class="line">                    11.81.1.2                          32768 i</span><br><span class="line">                    ET:8 RT:65000:10</span><br><span class="line"></span><br><span class="line">Displayed 6 out of 6 total prefixes</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>evpn BGP advertised-routes</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># frr command</span></span><br><span class="line">OpenWrt<span class="comment"># show bgp l2vpn evpn neighbors 11.1.1.1 advertised-routes</span></span><br><span class="line">BGP table version is 0, <span class="built_in">local</span> router ID is 11.81.1.2</span><br><span class="line">Default <span class="built_in">local</span> pref 100, <span class="built_in">local</span> AS 65000</span><br><span class="line">Status codes: s suppressed, d damped, h <span class="built_in">history</span>, * valid, &gt; best, i - internal</span><br><span class="line">Origin codes: i - IGP, e - EGP, ? - incomplete</span><br><span class="line"></span><br><span class="line">   Network          Next Hop            Metric LocPrf Weight Path</span><br><span class="line">Route Distinguisher: 11.81.1.2:2</span><br><span class="line">*&gt; [2]:[0]:[48]:[e4:43:4b:f6:c5:75]</span><br><span class="line">                                  100  32768 i</span><br><span class="line">*&gt; [2]:[0]:[48]:[e4:43:4b:f6:c5:75]:[32]:[192.168.8.10]</span><br><span class="line">                                  100  32768 i</span><br><span class="line">*&gt; [3]:[0]:[32]:[11.81.1.2]</span><br><span class="line">                                  100  32768 i</span><br><span class="line"></span><br><span class="line">Total number of prefixes 3</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-2-Linux-forwarding-plane"><a href="#3-2-2-Linux-forwarding-plane" class="headerlink" title="3.2.2 Linux forwarding plane"></a>3.2.2 Linux forwarding plane</h3><p>bridge fdb</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># linux command</span></span><br><span class="line">root@OpenWrt:~<span class="comment"># bridge fdb | grep -E &#x27;vxlan|wan|lan1&#x27;</span></span><br><span class="line">e4:43:4b:f6:c5:75 dev lan1 master br-lan</span><br><span class="line">94:83:c4:16:51:45 dev lan1 vlan 1 master br-lan permanent</span><br><span class="line">94:83:c4:16:51:45 dev lan1 master br-lan permanent</span><br><span class="line">e4:43:4b:f6:c5:75 dev lan1 vlan 1 self</span><br><span class="line">c0:42:d0:08:9a:80 dev wan vlan 1 self</span><br><span class="line">1c:9c:8c:67:c3:44 dev wan vlan 1 self</span><br><span class="line">1c:9c:8c:68:e4:c0 dev wan vlan 1 self</span><br><span class="line">e4:43:4b:f6:c5:56 dev vxlan1 vlan 1 extern_learn master br-lan</span><br><span class="line">e4:43:4b:f6:c5:56 dev vxlan1 extern_learn master br-lan</span><br><span class="line">3e:dd:f3:a4:65:2b dev vxlan1 vlan 1 master br-lan permanent</span><br><span class="line">3e:dd:f3:a4:65:2b dev vxlan1 master br-lan permanent</span><br><span class="line">00:00:00:00:00:00 dev vxlan1 dst 11.1.1.1 self permanent</span><br><span class="line">e4:43:4b:f6:c5:56 dev vxlan1 dst 11.1.1.1 self extern_learn</span><br><span class="line">33:33:00:00:00:01 dev wlan1 self permanent</span><br><span class="line">33:33:00:00:00:02 dev wlan1 self permanent</span><br></pre></td></tr></table></figure>
+
+<p>00:00:00:00:00:00 dev vxlan1 dst 11.1.1.1 self permanent. is add by /lib/netifd/proto/vxlan.sh</p>
+<p>vxlan interface:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@OpenWrt:~<span class="comment"># ip -d link show vxlan1</span></span><br><span class="line">8: vxlan1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue master br-lan state UNKNOWN mode DEFAULT group default qlen 1000</span><br><span class="line">    link/ether 3e:dd:f3:a4:65:2b brd ff:ff:ff:ff:ff:ff promiscuity 1 minmtu 68 maxmtu 65535</span><br><span class="line">    vxlan id 10 <span class="built_in">local</span> 11.81.1.2 srcport 0 0 dstport 4789 ttl auto ageing 300 udpcsum noudp6zerocsumtx noudp6zerocsumrx</span><br><span class="line">    bridge_slave state forwarding priority 32 cost 100 hairpin off guard off root_block off fastleave off learning on flood on port_id 0x8003 port_no 0x3 designated_port 32771 designated_cost 0 designated_bridge 7fff.94:83:C4:16:51:45 designated_root 7fff.94:83:C4:16:51:45 hold_timer    0.00 message_age_timer    0.00 forward_delay_timer    0.00 topology_change_ack 0 config_pending 0 proxy_arp off proxy_arp_wifi off mcast_router 1 mcast_fast_leave off mcast_flood on mcast_to_unicast off neigh_suppress off group_fwd_mask 0 group_fwd_mask_str 0x0 vlan_tunnel off isolated off addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535</span><br></pre></td></tr></table></figure>
+
+<p>linux bridge:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@OpenWrt:~<span class="comment"># brctl show</span></span><br><span class="line">bridge name	bridge id		STP enabled	interfaces</span><br><span class="line">br-lan		7fff.9483c4165145	no		lan2</span><br><span class="line">							vxlan1</span><br><span class="line">							lan1</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-Throughput"><a href="#4-Throughput" class="headerlink" title="4. Throughput"></a>4. Throughput</h1><h2 id="4-1-Bidirection-1450-sizes"><a href="#4-1-Bidirection-1450-sizes" class="headerlink" title="4.1 Bidirection(1450 sizes)"></a>4.1 Bidirection(1450 sizes)</h2><p> <img src="./1644372431377.png" alt="1644372431377.png"></p>
+<h2 id="4-2-One-direction-1450-sizes"><a href="#4-2-One-direction-1450-sizes" class="headerlink" title="4.2 One direction(1450 sizes)"></a>4.2 One direction(1450 sizes)</h2><p> <img src="./1644372481487.png" alt="1644372481487.png"></p>
+<h2 id="4-3-Bidirection-256-sizes"><a href="#4-3-Bidirection-256-sizes" class="headerlink" title="4.3 Bidirection(256 sizes)"></a>4.3 Bidirection(256 sizes)</h2><p> <img src="./1644372647021.png" alt="1644372647021.png"></p>
+<h2 id="4-4-One-direction-256-sizes"><a href="#4-4-One-direction-256-sizes" class="headerlink" title="4.4 One direction(256 sizes)"></a>4.4 One direction(256 sizes)</h2><p> <img src="./1644372910007.png" alt="1644372910007.png"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://nfshanq.github.io/2022/01/13/mellanox/switch/os-upgrade/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xin Yu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xin Yu's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/01/13/mellanox/switch/os-upgrade/" class="post-title-link" itemprop="url">switch os upgrade with onie</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-01-13 11:21:03 / Modified: 09:39:39" itemprop="dateCreated datePublished" datetime="2022-01-13T11:21:03+08:00">2022-01-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/mellanox/" itemprop="url" rel="index"><span itemprop="name">mellanox</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="prepare"><a href="#prepare" class="headerlink" title="prepare"></a>prepare</h1><h2 id="use-console-cable-to-connect-the-switch"><a href="#use-console-cable-to-connect-the-switch" class="headerlink" title="use console cable to connect the switch"></a>use console cable to connect the switch</h2><p>if we don’t have the ZTP environment. we need use console port to install the switch os. and we need a network cable to connect the mgmt interface.</p>
+<h1 id="switch-the-next-boot-to-ONIE"><a href="#switch-the-next-boot-to-ONIE" class="headerlink" title="switch the next boot to ONIE"></a>switch the next boot to ONIE</h1><h2 id="check-the-grub-menuentry-and-switch-to-onie"><a href="#check-the-grub-menuentry-and-switch-to-onie" class="headerlink" title="check the grub menuentry and switch to onie"></a>check the grub menuentry and switch to onie</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">grep -i <span class="string">&quot;menuentry &#x27;&quot;</span> /boot/grub/grub.cfg|sed -r <span class="string">&quot;s|--class .*$||g&quot;</span>|nl -v 0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> 0  menuentry <span class="string">&#x27;Cumulus-Linux GNU/Linux&#x27;</span></span><br><span class="line"> 1          menuentry <span class="string">&#x27;Cumulus-Linux GNU/Linux, with Linux 4.19.0-cl-1-amd64&#x27;</span></span><br><span class="line"> 2          menuentry <span class="string">&#x27;Cumulus-Linux GNU/Linux, with Linux 4.19.0-cl-1-amd64 (recovery mode)&#x27;</span></span><br><span class="line"> 3  menuentry ONIE &#123;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grub-reboot ONIE</span><br><span class="line"></span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+
+<h1 id="setup-the-onie-network"><a href="#setup-the-onie-network" class="headerlink" title="setup the onie network"></a>setup the onie network</h1><p>stop onie ztp</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">onie-stop</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>add ip address on eth0(mgmt interface)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ip address add 100.64.31.101/24 dev eth0</span><br><span class="line">ip route add default via 100.64.31.1</span><br></pre></td></tr></table></figure>
+
+<h1 id="install-the-cumulus-system"><a href="#install-the-cumulus-system" class="headerlink" title="install the cumulus system"></a>install the cumulus system</h1><h2 id="start-a-web-serivce-with-python3"><a href="#start-a-web-serivce-with-python3" class="headerlink" title="start a web serivce with python3"></a>start a web serivce with python3</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 -m http.server</span><br><span class="line">Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...</span><br></pre></td></tr></table></figure>
+
+<p>install cumulus os</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ONIE:/ <span class="comment"># onie-nos-install http://100.64.21.13:8000/cumulus-linux-5.0.0-mlx-amd64</span></span><br><span class="line">.bin</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -860,7 +1086,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2021-12-31 09:51:52" itemprop="dateModified" datetime="2021-12-31T09:51:52+08:00">2021-12-31</time>
+      <time title="Modified: 2021-12-31 14:24:11" itemprop="dateModified" datetime="2021-12-31T14:24:11+08:00">2021-12-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -893,7 +1119,12 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ovs-vsctl del-br ovsbr1</span><br><span class="line">ovs-vsctl del-br ovsbr2</span><br></pre></td></tr></table></figure>
 
 <p>delete sf interface</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sf_to_delete=$(mlnx-sf -a show | grep <span class="string">&quot;SF Index&quot;</span> | cut -d<span class="string">&quot; &quot;</span> -f3)</span><br><span class="line"><span class="keyword">for</span> sf <span class="keyword">in</span> <span class="variable">$sf_to_delete</span>; <span class="keyword">do</span></span><br><span class="line">	mlnx-sf -a delete -i <span class="string">&quot;<span class="variable">$sf</span>&quot;</span>;</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sf_to_delete=$(mlnx-sf -a show | grep <span class="string">&quot;SF Index&quot;</span> | cut -d<span class="string">&quot; &quot;</span> -f3)</span><br><span class="line"><span class="keyword">for</span> sf <span class="keyword">in</span> <span class="variable">$sf_to_delete</span>; <span class="keyword">do</span></span><br><span class="line">	mlnx-sf -a delete -i <span class="string">&quot;<span class="variable">$sf</span>&quot;</span>;</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>modify the config<br>file: /etc/mellanox/mlnx-sf.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:/home/ubuntu<span class="comment"># cat /etc/mellanox/mlnx-sf.conf</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#/sbin/mlnx-sf --action create --device 0000:03:00.0 --sfnum 0 --hwaddr 02:2a:e6:4d:e1:ad</span></span><br><span class="line"><span class="comment">#/sbin/mlnx-sf --action create --device 0000:03:00.1 --sfnum 0 --hwaddr 02:06:f3:ce:ad:5a</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="1-3-Hide-the-second-PF-on-host"><a href="#1-3-Hide-the-second-PF-on-host" class="headerlink" title="1.3 Hide the second PF on host"></a>1.3 Hide the second PF on host</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Hide the second PF on host</span></span><br><span class="line">	pf_hidden=$(mlxconfig -d <span class="string">&quot;<span class="variable">$mst_dev</span>&quot;</span>  q HIDE_PORT2_PF | grep True)</span><br><span class="line">	<span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$pf_hidden</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">echo</span> y | mlxconfig -d <span class="string">&quot;<span class="variable">$mst_dev</span>&quot;</span> s HIDE_PORT2_PF=True</span><br><span class="line">		<span class="built_in">echo</span> Please power cycle host server to hide the second unused host representative</span><br><span class="line">	<span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
 <p>Reboot the bluefield NIC</p>
 <h1 id="2-config-the-bond-interface"><a href="#2-config-the-bond-interface" class="headerlink" title="2. config the bond interface"></a>2. config the bond interface</h1><h2 id="2-1-command"><a href="#2-1-command" class="headerlink" title="2.1 command:"></a>2.1 command:</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ip link add bond0 <span class="built_in">type</span> bond</span><br><span class="line">ip link <span class="built_in">set</span> bond0 down</span><br><span class="line">ip link <span class="built_in">set</span> bond0 <span class="built_in">type</span> bond miimon 100 mode 4</span><br><span class="line">ip link <span class="built_in">set</span> p0 down</span><br><span class="line">ip link <span class="built_in">set</span> p1 down</span><br><span class="line">ip link <span class="built_in">set</span> p0 master bond0</span><br><span class="line">ip link <span class="built_in">set</span> p1 master bond0</span><br><span class="line">ip link <span class="built_in">set</span> p0 up</span><br><span class="line">ip link <span class="built_in">set</span> p1 up</span><br><span class="line">ip link <span class="built_in">set</span> bond0 up</span><br><span class="line">ovs-vsctl add-br bf-lag</span><br><span class="line">ovs-vsctl add-port bf-lag bond0</span><br><span class="line">ovs-vsctl add-port bf-lag pf0hpf</span><br><span class="line">ip link <span class="built_in">set</span> bf-lag up</span><br></pre></td></tr></table></figure>
@@ -953,147 +1184,9 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://nfshanq.github.io/2021/12/18/kubernetes/rancher/rke2-install/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xin Yu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Xin Yu's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/18/kubernetes/rancher/rke2-install/" class="post-title-link" itemprop="url">rke2-install</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-12-19 06:48:47 / Modified: 17:22:12" itemprop="dateCreated datePublished" datetime="2021-12-19T06:48:47+08:00">2021-12-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="1-系统准备"><a href="#1-系统准备" class="headerlink" title="1 系统准备"></a>1 系统准备</h1><h2 id="1-1-DNS-配置"><a href="#1-1-DNS-配置" class="headerlink" title="1.1 DNS 配置"></a>1.1 DNS 配置</h2><p>或者修改/etc/hosts 文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">100.64.20.101 k3s-001</span><br><span class="line">100.64.20.102 k3s-002</span><br><span class="line">100.64.20.103 k3s-003</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="1-2-disable-SELINUX"><a href="#1-2-disable-SELINUX" class="headerlink" title="1.2. disable SELINUX"></a>1.2. disable SELINUX</h2><h2 id="1-3-linux-module"><a href="#1-3-linux-module" class="headerlink" title="1.3. linux module"></a>1.3. linux module</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysctl.conf</span></span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">net.ipv4.ip_forward = 1</span><br><span class="line"><span class="comment"># modprobe br_netfilter</span></span><br><span class="line"><span class="comment"># sysctl -p</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="1-4-修改Firewall-规则"><a href="#1-4-修改Firewall-规则" class="headerlink" title="1.4. 修改Firewall 规则"></a>1.4. 修改Firewall 规则</h2><p>master 需要open TCP 9345 port</p>
-<h2 id="1-5-networkmanager-的修改"><a href="#1-5-networkmanager-的修改" class="headerlink" title="1.5. networkmanager 的修改"></a>1.5. networkmanager 的修改</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/NetworkManager/conf.d/rke2-canal.conf</span></span><br><span class="line">[keyfile]</span><br><span class="line">unmanaged-devices=interface-name:cali*;interface-name:flannel*</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="2-安装rke2"><a href="#2-安装rke2" class="headerlink" title="2. 安装rke2"></a>2. 安装rke2</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Master node:</span><br><span class="line"><span class="comment"># curl -sfL http://rancher-mirror.rancher.cn/rke2/install.sh | INSTALL_RKE2_MIRROR=cn sh -</span></span><br><span class="line">worker node:</span><br><span class="line"><span class="comment"># curl -sfL http://rancher-mirror.rancher.cn/rke2/install.sh | INSTALL_RKE2_MIRROR=cn INSTALL_RKE2_TYPE=&quot;agent&quot;  sh -</span></span><br></pre></td></tr></table></figure>
-
-<p>指定一个安装的版本</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sfL http://rancher-mirror.rancher.cn/rke2/install.sh | INSTALL_RKE2_VERIOIN= vX.Y.Z- INSTALL_RKE2_MIRROR=cn sh -</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-1-启动-第一个-rke2-master-节点"><a href="#2-1-启动-第一个-rke2-master-节点" class="headerlink" title="2.1 启动 第一个 rke2 master 节点"></a>2.1 启动 第一个 rke2 master 节点</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># systemctl enable rke2-server</span></span><br><span class="line"><span class="comment"># systemctl start rke2-server</span></span><br></pre></td></tr></table></figure>
-
-<p>在第一次启动后，在/var/lib/rancher/rke2 目录下会创建 rke2 的环境</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">root@k3s-001:/var/lib/rancher/rke2<span class="comment"># ls -lh</span></span><br><span class="line">total 12K</span><br><span class="line">drwxr-xr-x 7 root root 4.0K Nov 19 08:08 agent</span><br><span class="line">lrwxrwxrwx 1 root root   58 Nov 19 08:03 bin -&gt; /var/lib/rancher/rke2/data/v1.21.6-rke2r1-fd8a733b61b5/bin</span><br><span class="line">drwxr-xr-x 3 root root 4.0K Nov 19 08:03 data</span><br><span class="line">drwx------ 7 root root 4.0K Nov 19 08:07 server</span><br><span class="line">root@k3s-001:/var/lib/rancher/rke2<span class="comment"># ls -lh ./bin/</span></span><br><span class="line">total 269M</span><br><span class="line">-rwxr-xr-x 1 root root  33M Nov 19 08:03 containerd</span><br><span class="line">-rwxr-xr-x 1 root root 6.2M Nov 19 08:03 containerd-shim</span><br><span class="line">-rwxr-xr-x 1 root root  11M Nov 19 08:03 containerd-shim-runc-v1</span><br><span class="line">-rwxr-xr-x 1 root root  11M Nov 19 08:03 containerd-shim-runc-v2</span><br><span class="line">-rwxr-xr-x 1 root root  23M Nov 19 08:03 crictl</span><br><span class="line">-rwxr-xr-x 1 root root  19M Nov 19 08:03 ctr</span><br><span class="line">-rwxr-xr-x 1 root root  47M Nov 19 08:03 kubectl</span><br><span class="line">-rwxr-xr-x 1 root root 112M Nov 19 08:03 kubelet</span><br><span class="line">-rwxr-xr-x 1 root root  11M Nov 19 08:03 runc</span><br><span class="line">-rwxr-xr-x 1 root root 307K Nov 19 08:03 socat</span><br><span class="line">root@k3s-001:/var/lib/rancher/rke2<span class="comment">#</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>在 /etc/rancher/rke2 目录下会生成 rke2.yaml 的文件。这是一个 kubectl 的配置文件，用于集群管理。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@k3s-001:~<span class="comment"># ls -l /etc/rancher/rke2/</span></span><br><span class="line">total 4</span><br><span class="line">-rw------- 1 root root 2961 Nov 19 08:03 rke2.yaml</span><br><span class="line">root@k3s-001:~<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p>通过kubectl 管理k3s 集群</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> KUBECONFIG=/etc/rancher/rke2/rke2.yaml</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/var/lib/rancher/rke2/bin</span><br></pre></td></tr></table></figure>
-
-<p>查看k3s cluster(rke2)</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">root@k3s-001:~<span class="comment"># kubectl get pod -A</span></span><br><span class="line">NAMESPACE     NAME                                                   READY   STATUS      RESTARTS   AGE</span><br><span class="line">kube-system   cloud-controller-manager-k3s-001                       1/1     Running     0          19h</span><br><span class="line">kube-system   etcd-k3s-001                                           1/1     Running     0          19h</span><br><span class="line">kube-system   helm-install-rke2-canal-nwqr2                          0/1     Completed   0          19h</span><br><span class="line">kube-system   helm-install-rke2-coredns-86s8w                        0/1     Completed   0          19h</span><br><span class="line">kube-system   helm-install-rke2-ingress-nginx-t2bvr                  0/1     Completed   0          19h</span><br><span class="line">kube-system   helm-install-rke2-metrics-server-2q2f7                 0/1     Completed   0          19h</span><br><span class="line">kube-system   kube-apiserver-k3s-001                                 1/1     Running     0          19h</span><br><span class="line">kube-system   kube-controller-manager-k3s-001                        1/1     Running     0          19h</span><br><span class="line">kube-system   kube-proxy-k3s-001                                     1/1     Running     0          19h</span><br><span class="line">kube-system   kube-scheduler-k3s-001                                 1/1     Running     0          19h</span><br><span class="line">kube-system   rke2-canal-46v6k                                       2/2     Running     0          19h</span><br><span class="line">kube-system   rke2-coredns-rke2-coredns-5c84cbd6bd-tdlcn             1/1     Running     0          19h</span><br><span class="line">kube-system   rke2-coredns-rke2-coredns-autoscaler-78bdc5d6c-gj4w6   1/1     Running     0          19h</span><br><span class="line">kube-system   rke2-ingress-nginx-controller-gxszn                    1/1     Running     0          19h</span><br><span class="line">kube-system   rke2-metrics-server-5df7d77b5b-p2j7t                   1/1     Running     0          19h</span><br><span class="line">root@k3s-001:~<span class="comment"># kubectl get node -A</span></span><br><span class="line">NAME      STATUS   ROLES                       AGE   VERSION</span><br><span class="line">k3s-001   Ready    control-plane,etcd,master   19h   v1.21.6+rke2r1</span><br><span class="line">root@k3s-001:~<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p>修改第一个节点的 rke2 配置文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/rancher/rke2/config.yaml</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># token path /var/lib/rancher/rke2/server/node-token</span></span><br><span class="line">token: K10b74ab83885c946d61159a734036a4f964f54acd80a5a74042cf9adff34a983b0::server:82ed82eb9668d57283c1efd84c5c1a05</span><br><span class="line">node-name: <span class="string">&quot;k3s-001&quot;</span></span><br><span class="line"><span class="comment"># node-taint:</span></span><br><span class="line">node-label:</span><br><span class="line">  - <span class="string">&quot;node=Master&quot;</span></span><br><span class="line">  - <span class="string">&quot;k3s-001=Master&quot;</span></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
-
-<p>重启rke2 server</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># systemctl daemon-reload</span></span><br><span class="line"><span class="comment"># systemctl restart rke2-server</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-2-添加第二个master-节点"><a href="#2-2-添加第二个master-节点" class="headerlink" title="2.2 添加第二个master 节点"></a>2.2 添加第二个master 节点</h2><p>在第二个节点上添加 配置文件(先不要启动第二节点的rke2-server 服务，如果之前启动过，那么会有一些配置文件不一致导致无法加入集群)</p>
-<p>第二个节点的配置文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mkdir -p /etc/rancher/rke2/</span></span><br><span class="line"><span class="comment"># cat /etc/rancher/rke2/config.yaml</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># token path /var/lib/rancher/rke2/server/node-token</span></span><br><span class="line">server: <span class="string">&quot;https://100.64.20.101:9345&quot;</span></span><br><span class="line"><span class="comment"># token path /var/lib/rancher/rke2/server/node-token (from first master node)</span></span><br><span class="line">token: K10b74ab83885c946d61159a734036a4f964f54acd80a5a74042cf9adff34a983b0::server:82ed82eb9668d57283c1efd84c5c1a05</span><br><span class="line"></span><br><span class="line">node-name: <span class="string">&quot;k3s-002&quot;</span></span><br><span class="line"><span class="comment"># node-taint:</span></span><br><span class="line">node-label:</span><br><span class="line">  - <span class="string">&quot;node=Master&quot;</span></span><br><span class="line">  - <span class="string">&quot;k3s-002=Master&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-3-添加第三个节点作为work-节点"><a href="#2-3-添加第三个节点作为work-节点" class="headerlink" title="2.3 添加第三个节点作为work 节点"></a>2.3 添加第三个节点作为work 节点</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mkdir -p /etc/rancher/rke2/</span></span><br><span class="line"><span class="comment"># cat /etc/rancher/rke2/config.yaml</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># token path /var/lib/rancher/rke2/server/node-token</span></span><br><span class="line">server: <span class="string">&quot;https://100.64.20.101:9345&quot;</span></span><br><span class="line"><span class="comment"># token path /var/lib/rancher/rke2/server/node-token (from first master node)</span></span><br><span class="line">token: K10b74ab83885c946d61159a734036a4f964f54acd80a5a74042cf9adff34a983b0::server:82ed82eb9668d57283c1efd84c5c1a05</span><br><span class="line">node-name: <span class="string">&quot;k3s-003&quot;</span></span><br><span class="line"><span class="comment"># node-taint:</span></span><br><span class="line">node-label:</span><br><span class="line">  - <span class="string">&quot;node=Worker&quot;</span></span><br><span class="line">  - <span class="string">&quot;k3s-003=Worker&quot;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart rke2-agent</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="检查-containerd"><a href="#检查-containerd" class="headerlink" title="检查 containerd"></a>检查 containerd</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#/var/lib/rancher/rke2/bin/crictl --runtime-endpoint=unix:///run/k3s/containerd/containerd.sock ps</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="配置master-上的管理cli-环境变量"><a href="#配置master-上的管理cli-环境变量" class="headerlink" title="配置master 上的管理cli 环境变量"></a>配置master 上的管理cli 环境变量</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd $HOME</span></span><br><span class="line">mkdir .kube</span><br><span class="line">ln -s /etc/rancher/rke2/rke2.yaml ~/.kube/config</span><br><span class="line">chmod 600 ~/.kube/config</span><br><span class="line">ln -s /var/lib/rancher/rke2/agent/etc/crictl.yaml /etc/crictl.yaml</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/var/lib/rancher/rke2/bin</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="container-的image-rergistory-TBD"><a href="#container-的image-rergistory-TBD" class="headerlink" title="container 的image rergistory -TBD"></a>container 的image rergistory -TBD</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/rancher/rke2/registries.yaml</span><br><span class="line"></span><br><span class="line">mirrors:</span><br><span class="line">  aliyuns.com:</span><br><span class="line">    endpoint:</span><br><span class="line">      - <span class="string">&quot;&quot;</span></span><br><span class="line">configs:</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
-
-
-
-<p>配置etcd的 snapshots</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">token: K10b74ab83885c946d61159a734036a4f964f54acd80a5a74042cf9adff34a983b0::server:82ed82eb9668d57283c1efd84c5c1a05</span><br><span class="line">node-name: <span class="string">&quot;k3s-001&quot;</span></span><br><span class="line"><span class="comment"># node-taint:</span></span><br><span class="line">node-label:</span><br><span class="line">  - <span class="string">&quot;node=Master&quot;</span></span><br><span class="line">  - <span class="string">&quot;k3s-001=Master&quot;</span></span><br><span class="line"></span><br><span class="line">etcd-snapshot-retention: 2</span><br><span class="line"><span class="comment"># /var/lib/rancher/rke2/server/db/snapshots/</span></span><br><span class="line">etcd-snapshot-schedule-cron: <span class="string">&#x27;*/5 * * * *&#x27;</span></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 </div>
   </main>
@@ -1104,7 +1197,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"nfshanq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1. Topology  GL.inet MT1300 is MT7621 chip   2. device config2.1 QFX5100 config2.1.1 interface config1234567891011# L2 interface set xe-0&#x2F;0&#x2F;0 unit 0 family ethernet-switching interface-mode accessset">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenWRT VxLAN">
+<meta property="og:url" content="https://nfshanq.github.io/2022/02/07/Linux/openwrt/vxlan/index.html">
+<meta property="og:site_name" content="Xin Yu&#39;s Notes">
+<meta property="og:description" content="1. Topology  GL.inet MT1300 is MT7621 chip   2. device config2.1 QFX5100 config2.1.1 interface config1234567891011# L2 interface set xe-0&#x2F;0&#x2F;0 unit 0 family ethernet-switching interface-mode accessset">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://nfshanq.github.io/2022/02/07/Linux/openwrt/vxlan/1644369044061.png">
+<meta property="og:image" content="https://nfshanq.github.io/2022/02/07/Linux/openwrt/vxlan/1644372818557.png">
+<meta property="og:image" content="https://nfshanq.github.io/2022/02/07/Linux/openwrt/vxlan/1644369624624.png">
+<meta property="og:image" content="https://nfshanq.github.io/2022/02/07/Linux/openwrt/vxlan/1644370121708.png">
+<meta property="og:image" content="https://nfshanq.github.io/2022/02/07/Linux/openwrt/vxlan/1644372431377.png">
+<meta property="og:image" content="https://nfshanq.github.io/2022/02/07/Linux/openwrt/vxlan/1644372481487.png">
+<meta property="og:image" content="https://nfshanq.github.io/2022/02/07/Linux/openwrt/vxlan/1644372647021.png">
+<meta property="og:image" content="https://nfshanq.github.io/2022/02/07/Linux/openwrt/vxlan/1644372910007.png">
+<meta property="article:published_time" content="2022-02-07T21:07:50.000Z">
+<meta property="article:modified_time" content="2022-02-09T02:15:14.205Z">
+<meta property="article:author" content="Xin Yu">
+<meta property="article:tag" content="OpenWRT">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://nfshanq.github.io/2022/02/07/Linux/openwrt/vxlan/1644369044061.png">
+
+
+<link rel="canonical" href="https://nfshanq.github.io/2022/02/07/Linux/openwrt/vxlan/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://nfshanq.github.io/2022/02/07/Linux/openwrt/vxlan/","path":"2022/02/07/Linux/openwrt/vxlan/","title":"OpenWRT VxLAN"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>OpenWRT VxLAN | Xin Yu's Notes</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Xin Yu's Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Xin Yu's Notes</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-books"><a href="/books/" rel="section"><i class="fa fa-books fa-fw"></i>books</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Topology"><span class="nav-number">1.</span> <span class="nav-text">1. Topology</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-device-config"><span class="nav-number">2.</span> <span class="nav-text">2. device config</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-QFX5100-config"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 QFX5100 config</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-interface-config"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 interface config</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-protocol-config"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2 protocol config</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-3-switch-and-vlan-config"><span class="nav-number">2.1.3.</span> <span class="nav-text">2.1.3 switch and vlan config</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-OpenWRT-config"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 OpenWRT config</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-FRR-config"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 FRR config</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-vxlan-interface-config"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 vxlan interface config</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-firewall-config"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.2.3 firewall config</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-vxlan-evpn-status"><span class="nav-number">3.</span> <span class="nav-text">3. vxlan evpn status</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-QFX5100"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 QFX5100</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-BGP-control-plane"><span class="nav-number">3.1.1.</span> <span class="nav-text">3.1.1 BGP (control plane)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-forwarding-plane"><span class="nav-number">3.1.2.</span> <span class="nav-text">3.1.2 forwarding plane</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-OpenWRT"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 OpenWRT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-BGP"><span class="nav-number">3.2.1.</span> <span class="nav-text">3.2.1 BGP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-Linux-forwarding-plane"><span class="nav-number">3.2.2.</span> <span class="nav-text">3.2.2 Linux forwarding plane</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-Throughput"><span class="nav-number">4.</span> <span class="nav-text">4. Throughput</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-Bidirection-1450-sizes"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 Bidirection(1450 sizes)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-One-direction-1450-sizes"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 One direction(1450 sizes)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-Bidirection-256-sizes"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 Bidirection(256 sizes)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-One-direction-256-sizes"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 One direction(256 sizes)</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xin Yu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://nfshanq.github.io/2022/02/07/Linux/openwrt/vxlan/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xin Yu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xin Yu's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OpenWRT VxLAN
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-02-08 05:07:50" itemprop="dateCreated datePublished" datetime="2022-02-08T05:07:50+08:00">2022-02-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-02-09 10:15:14" itemprop="dateModified" datetime="2022-02-09T10:15:14+08:00">2022-02-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-Topology"><a href="#1-Topology" class="headerlink" title="1. Topology"></a>1. Topology</h1><p> <img src="./1644369044061.png" alt="1644369044061.png"></p>
+<p>GL.inet MT1300 is MT7621 chip</p>
+<p> <img src="./1644372818557.png" alt="1644372818557.png"></p>
+<h1 id="2-device-config"><a href="#2-device-config" class="headerlink" title="2. device config"></a>2. device config</h1><h2 id="2-1-QFX5100-config"><a href="#2-1-QFX5100-config" class="headerlink" title="2.1 QFX5100 config"></a>2.1 QFX5100 config</h2><h3 id="2-1-1-interface-config"><a href="#2-1-1-interface-config" class="headerlink" title="2.1.1 interface config"></a>2.1.1 interface config</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># L2 interface </span></span><br><span class="line"><span class="built_in">set</span> xe-0/0/0 unit 0 family ethernet-switching interface-mode access</span><br><span class="line"><span class="built_in">set</span> xe-0/0/0 unit 0 family ethernet-switching vlan members vlan-vxlan10</span><br><span class="line"></span><br><span class="line"><span class="comment"># connect L2 switch</span></span><br><span class="line"><span class="built_in">set</span> xe-0/0/37 unit 0 family ethernet-switching interface-mode trunk</span><br><span class="line"><span class="built_in">set</span> xe-0/0/37 unit 0 family ethernet-switching vlan members vlan81</span><br><span class="line"></span><br><span class="line"><span class="comment"># vtep source interface</span></span><br><span class="line"><span class="built_in">set</span> irb unit 81 family inet address 11.81.1.1/24</span><br><span class="line"><span class="built_in">set</span> lo0 unit 0 family inet address 11.1.1.1/32</span><br></pre></td></tr></table></figure>
+
+<p>vlan-vxlan10 is vxlan vlan</p>
+<h3 id="2-1-2-protocol-config"><a href="#2-1-2-protocol-config" class="headerlink" title="2.1.2 protocol config"></a>2.1.2 protocol config</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> routing-options router-id 11.1.1.1</span><br><span class="line"><span class="built_in">set</span> routing-options autonomous-system 65000</span><br><span class="line"><span class="built_in">set</span> protocols bgp group evpn <span class="built_in">type</span> internal</span><br><span class="line"><span class="built_in">set</span> protocols bgp group evpn local-address 11.1.1.1</span><br><span class="line"><span class="built_in">set</span> protocols bgp group evpn family evpn signaling</span><br><span class="line"><span class="built_in">set</span> protocols bgp group evpn allow 11.81.1.0/24</span><br><span class="line"><span class="built_in">set</span> protocols bgp group evpn allow 11.82.1.0/24</span><br><span class="line"><span class="built_in">set</span> protocols evpn encapsulation vxlan</span><br><span class="line"><span class="built_in">set</span> protocols evpn vni-options vni 10 vrf-target target:65000:10</span><br><span class="line"><span class="built_in">set</span> protocols evpn extended-vni-list 10</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-3-switch-and-vlan-config"><a href="#2-1-3-switch-and-vlan-config" class="headerlink" title="2.1.3 switch and vlan config"></a>2.1.3 switch and vlan config</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> switch-options vtep-source-interface lo0.0</span><br><span class="line"><span class="built_in">set</span> switch-options route-distinguisher 11.1.1.1:10</span><br><span class="line"><span class="built_in">set</span> switch-options vrf-target target:65000:10</span><br><span class="line"><span class="built_in">set</span> vlans vlan-vxlan10 vlan-id 10</span><br><span class="line"><span class="built_in">set</span> vlans vlan-vxlan10 vxlan vni 10</span><br><span class="line"><span class="built_in">set</span> vlans vlan-vxlan10 vxlan ingress-node-replication</span><br><span class="line"><span class="built_in">set</span> vlans vlan81 description <span class="string">&quot;openwrt test&quot;</span></span><br><span class="line"><span class="built_in">set</span> vlans vlan81 vlan-id 81</span><br><span class="line"><span class="built_in">set</span> vlans vlan81 l3-interface irb.81</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-OpenWRT-config"><a href="#2-2-OpenWRT-config" class="headerlink" title="2.2 OpenWRT config"></a>2.2 OpenWRT config</h2><h3 id="2-2-1-FRR-config"><a href="#2-2-1-FRR-config" class="headerlink" title="2.2.1 FRR config"></a>2.2.1 FRR config</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">router bgp 65000</span><br><span class="line"> bgp router-id 11.81.1.2</span><br><span class="line"> neighbor evpn peer-group</span><br><span class="line"> neighbor evpn remote-as internal</span><br><span class="line"> neighbor evpn update-source wan</span><br><span class="line"> neighbor 11.1.1.1 peer-group evpn</span><br><span class="line"> !</span><br><span class="line"> address-family l2vpn evpn</span><br><span class="line">  neighbor evpn activate</span><br><span class="line">  advertise-all-vni</span><br><span class="line">  advertise ipv4 unicast</span><br><span class="line"> exit-address-family</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="2-2-2-vxlan-interface-config"><a href="#2-2-2-vxlan-interface-config" class="headerlink" title="2.2.2 vxlan interface config"></a>2.2.2 vxlan interface config</h3><p>The OpenWRT config (/etc/config/network) must need  vxlan peeraddr.</p>
+<p>ref: <a target="_blank" rel="noopener" href="https://openwrt.org/docs/guide-user/network/tunneling_interface_protocols">https://openwrt.org/docs/guide-user/network/tunneling_interface_protocols</a></p>
+<p> <img src="./1644369624624.png" alt="1644369624624.png"></p>
+<p>so, use hotplug to add the vxlan interface.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root@OpenWrt:~<span class="comment"># cat /etc/hotplug.d/iface/50-vxlan</span></span><br><span class="line"><span class="comment">#!/bin/sh</span></span><br><span class="line"></span><br><span class="line">[ <span class="string">&quot;<span class="variable">$ACTION</span>&quot;</span> == <span class="string">&quot;ifup&quot;</span> ] &amp;&amp; [ <span class="string">&quot;<span class="variable">$INTERFACE</span>&quot;</span> == <span class="string">&quot;wan&quot;</span> ] &amp;&amp; &#123;</span><br><span class="line"></span><br><span class="line">WAN_IFNAME=<span class="string">&#x27;wan@eth0&#x27;</span></span><br><span class="line">WAN_IP=<span class="string">&quot;<span class="subst">$(ip -br a | grep <span class="string">&quot;<span class="variable">$WAN_IFNAME</span>&quot;</span> | grep -Eo &#x27;[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;&#x27;)</span>&quot;</span></span><br><span class="line"></span><br><span class="line">ip link del vxlan1</span><br><span class="line">ip link add vxlan1 <span class="built_in">type</span> vxlan id 10 <span class="built_in">local</span> <span class="variable">$&#123;WAN_IP&#125;</span> dstport 4789</span><br><span class="line">ip link <span class="built_in">set</span> vxlan1 master br-lan</span><br><span class="line">ip link <span class="built_in">set</span> vxlan1 up</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-3-firewall-config"><a href="#2-2-3-firewall-config" class="headerlink" title="2.2.3 firewall config"></a>2.2.3 firewall config</h3><p>The OpenWRT default firewall is disable the VxLAN traffic.  so we need add the firewall rule. JUNOS will use 4789 to connect the VxLAN. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># … in the /etc/config/firewall</span></span><br><span class="line">config rule</span><br><span class="line">        option name             Allow-VxLAN</span><br><span class="line">        option src              wan</span><br><span class="line">        option dest_port        4789</span><br><span class="line">        option proto            udp</span><br><span class="line">        option target           ACCEPT</span><br></pre></td></tr></table></figure>
+
+<p>if we need another BGP speaker to connect active.  we need to add the BGP 179(TCP) port in the firewall rule. In my use case, the JUNOS BGP speaker is passive mode.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># … in the /etc/config/firewall</span></span><br><span class="line">config rule</span><br><span class="line">        option name             Allow-BGP</span><br><span class="line">        option src              wan</span><br><span class="line">        option dest_port        179</span><br><span class="line">        option proto            tcp</span><br><span class="line">        option target           ACCEPT</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="./1644370121708.png" alt="1644370121708.png"></p>
+<h1 id="3-vxlan-evpn-status"><a href="#3-vxlan-evpn-status" class="headerlink" title="3. vxlan evpn status"></a>3. vxlan evpn status</h1><h2 id="3-1-QFX5100"><a href="#3-1-QFX5100" class="headerlink" title="3.1 QFX5100"></a>3.1 QFX5100</h2><h3 id="3-1-1-BGP-control-plane"><a href="#3-1-1-BGP-control-plane" class="headerlink" title="3.1.1 BGP (control plane)"></a>3.1.1 BGP (control plane)</h3><p>BGP peer is evpn.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">lab@qfx5100-48s-6q&gt; show bgp summary</span><br><span class="line">Threading mode: BGP I/O</span><br><span class="line">Groups: 1 Peers: 1 Down peers: 0</span><br><span class="line">Unconfigured peers: 1</span><br><span class="line">Table          Tot Paths  Act Paths Suppressed    History Damp State    Pending</span><br><span class="line">bgp.evpn.0</span><br><span class="line">                       2          2          0          0          0          0</span><br><span class="line">Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn State|<span class="comment">#Active/Received/Accepted/Damped...</span></span><br><span class="line">11.81.1.2             65000         80         70       0       0       28:40 Establ</span><br><span class="line">  __default_evpn__.evpn.0: 0/0/0/0</span><br><span class="line">  bgp.evpn.0: 2/2/2/0</span><br><span class="line">  default-switch.evpn.0: 2/2/2/0</span><br></pre></td></tr></table></figure>
+
+<p>BGP evpn NLRI</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">lab@qfx5100-48s-6q&gt; show route table bgp.evpn.0</span><br><span class="line"></span><br><span class="line">bgp.evpn.0: 6 destinations, 6 routes (6 active, 0 holddown, 0 hidden)</span><br><span class="line">+ = Active Route, - = Last Active, * = Both</span><br><span class="line"></span><br><span class="line">2:11.1.1.1:10::10::e4:43:4b:f6:c5:56/304 MAC/IP</span><br><span class="line">                   *[EVPN/170] 00:39:07</span><br><span class="line">                       Indirect</span><br><span class="line">2:11.81.1.2:2::0::e4:43:4b:f6:c5:75/304 MAC/IP</span><br><span class="line">                   *[BGP/170] 00:45:24, localpref 100</span><br><span class="line">                      AS path: I, validation-state: unverified</span><br><span class="line">                    &gt;  to 11.81.1.2 via irb.81</span><br><span class="line">2:11.1.1.1:10::10::e4:43:4b:f6:c5:56::192.168.8.100/304 MAC/IP</span><br><span class="line">                   *[EVPN/170] 00:19:13</span><br><span class="line">                       Indirect</span><br><span class="line">2:11.81.1.2:2::0::e4:43:4b:f6:c5:75::192.168.8.10/304 MAC/IP</span><br><span class="line">                   *[BGP/170] 00:00:19, localpref 100</span><br><span class="line">                      AS path: I, validation-state: unverified</span><br><span class="line">                    &gt;  to 11.81.1.2 via irb.81</span><br><span class="line">3:11.1.1.1:10::10::11.1.1.1/248 IM</span><br><span class="line">                   *[EVPN/170] 00:46:26</span><br><span class="line">                       Indirect</span><br><span class="line">3:11.81.1.2:2::0::11.81.1.2/248 IM</span><br><span class="line">                   *[BGP/170] 00:45:24, localpref 100</span><br><span class="line">                      AS path: I, validation-state: unverified</span><br><span class="line">                    &gt;  to 11.81.1.2 via irb.81</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>One evpn BGP NLRI extensive information.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">lab@qfx5100-48s-6q&gt; show route table bgp.evpn.0 extensive evpn-mac-address e4:43:4b:f6:c5:75</span><br><span class="line"></span><br><span class="line">bgp.evpn.0: 5 destinations, 5 routes (5 active, 0 holddown, 0 hidden)</span><br><span class="line">2:11.81.1.2:2::0::e4:43:4b:f6:c5:75/304 MAC/IP (1 entry, 0 announced)</span><br><span class="line">        *BGP    Preference: 170/-101</span><br><span class="line">                Route Distinguisher: 11.81.1.2:2</span><br><span class="line">                Next hop <span class="built_in">type</span>: Indirect, Next hop index: 0</span><br><span class="line">                Address: 0xccd60b0</span><br><span class="line">                Next-hop reference count: 4</span><br><span class="line">                Source: 11.81.1.2</span><br><span class="line">                Protocol next hop: 11.81.1.2</span><br><span class="line">                Indirect next hop: 0x2 no-forward INH Session ID: 0x0</span><br><span class="line">                State: &lt;Active Int Ext&gt;</span><br><span class="line">                Local AS: 65000 Peer AS: 65000</span><br><span class="line">                Age: 17:50:15 	Metric2: 0</span><br><span class="line">                Validation State: unverified</span><br><span class="line">                Task: BGP_65000.11.81.1.2+43211</span><br><span class="line">                AS path: I</span><br><span class="line">                Communities: target:65000:10 encapsulation:vxlan(0x8)</span><br><span class="line">                Import Accepted</span><br><span class="line">                Route Label: 10</span><br><span class="line">                ESI: 00:00:00:00:00:00:00:00:00:00</span><br><span class="line">                Localpref: 100</span><br><span class="line">                Router ID: 11.81.1.2</span><br><span class="line">                Secondary Tables: default-switch.evpn.0</span><br><span class="line">                Indirect next hops: 1</span><br><span class="line">                        Protocol next hop: 11.81.1.2</span><br><span class="line">                        Indirect next hop: 0x2 no-forward INH Session ID: 0x0</span><br><span class="line">                        Indirect path forwarding next hops: 1</span><br><span class="line">                                Next hop <span class="built_in">type</span>: Router</span><br><span class="line">                                Next hop: 11.81.1.2 via irb.81</span><br><span class="line">                                Session Id: 0x0</span><br><span class="line">				11.81.1.0/24 Originating RIB: inet.0</span><br><span class="line">				  Node path count: 1</span><br><span class="line">				  Forwarding nexthops: 1</span><br><span class="line">					Next hop <span class="built_in">type</span>: Interface</span><br><span class="line">					Nexthop: via irb.81</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1-2-forwarding-plane"><a href="#3-1-2-forwarding-plane" class="headerlink" title="3.1.2 forwarding plane"></a>3.1.2 forwarding plane</h3><p>mac-ip table</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;master:0&#125;</span><br><span class="line">lab@qfx5100-48s-6q&gt; show ethernet-switching mac-ip-table</span><br><span class="line"></span><br><span class="line">MAC IP flags  (S - Static, D - Dynamic, L - Local , R - Remote, Lp - Local Proxy,</span><br><span class="line">               Rp - Remote Proxy, K - Kernel, RT - Dest Route, AD - Advt to remote,</span><br><span class="line">               RE - Re-ARP/ND, RO - Router, OV - Override)</span><br><span class="line"> Routing instance : default-switch</span><br><span class="line"> Bridging domain : vlan-vxlan10</span><br><span class="line">   IP                           MAC                  Flags             Logical            Active</span><br><span class="line">   address                      address                                Interface          <span class="built_in">source</span></span><br><span class="line">   192.168.8.100                e4:43:4b:f6:c5:56    DL,K,AD           xe-0/0/0.0</span><br><span class="line">   192.168.8.10                 e4:43:4b:f6:c5:75    DR,K              vtep.32769         11.81.1.2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>MAC table:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;master:0&#125;</span><br><span class="line">lab@qfx5100-48s-6q&gt; show ethernet-switching table</span><br><span class="line"></span><br><span class="line">MAC flags (S - static MAC, D - dynamic MAC, L - locally learned, P - Persistent static</span><br><span class="line">           SE - statistics enabled, NM - non configured MAC, R - remote PE MAC, O - ovsdb MAC)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Ethernet switching table : 3 entries, 3 learned</span><br><span class="line">Routing instance : default-switch</span><br><span class="line">   Vlan                MAC                 MAC      Logical                Active</span><br><span class="line">   name                address             flags    interface              <span class="built_in">source</span></span><br><span class="line">   vlan-vxlan10        e4:43:4b:f6:c5:56   D        xe-0/0/0.0</span><br><span class="line">   vlan-vxlan10        e4:43:4b:f6:c5:75   D        vtep.32769             11.81.1.2</span><br><span class="line">   vlan81              94:83:c4:16:51:44   D        xe-0/0/37.0</span><br><span class="line"></span><br><span class="line">&#123;master:0&#125;</span><br></pre></td></tr></table></figure>
+
+<p>forwarding-table detail:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;master:0&#125;</span><br><span class="line">lab@qfx5100-48s-6q&gt; show route forwarding-table family ethernet-switching matching e4:43:4b:f6:c5:75/48 extensive</span><br><span class="line">Routing table: default-switch.evpn-vxlan [Index 7]</span><br><span class="line">Bridging domain: vlan-vxlan10.evpn-vxlan [Index 3]</span><br><span class="line">VPLS:</span><br><span class="line">Enabled protocols: Bridging, ACKed by all peers, EVPN VXLAN,</span><br><span class="line"></span><br><span class="line">Destination:  e4:43:4b:f6:c5:75/48</span><br><span class="line">  Learn VLAN: 0                        Route <span class="built_in">type</span>: user</span><br><span class="line">  Route reference: 0                   Route interface-index: 566</span><br><span class="line">  Multicast RPF nh index: 0</span><br><span class="line">  P2mpidx: 0</span><br><span class="line">  IFL generation: 131                  Epoch: 0</span><br><span class="line">  Sequence Number: 0                   Learn Mask: 0x4000000000000000000000000000000000000000</span><br><span class="line">  L2 Flags: control_dyn</span><br><span class="line">  Flags: sent to PFE</span><br><span class="line">  Nexthop:</span><br><span class="line">  Next-hop <span class="built_in">type</span>: composite             Index: 1742     Reference: 5</span><br><span class="line">  Next-hop <span class="built_in">type</span>: indirect              Index: 524286   Reference: 3</span><br><span class="line">  Nexthop: 11.81.1.2</span><br><span class="line">  Next-hop <span class="built_in">type</span>: unicast               Index: 1741     Reference: 4</span><br><span class="line">  Next-hop interface: xe-0/0/37.0</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="3-2-OpenWRT"><a href="#3-2-OpenWRT" class="headerlink" title="3.2 OpenWRT"></a>3.2 OpenWRT</h2><h3 id="3-2-1-BGP"><a href="#3-2-1-BGP" class="headerlink" title="3.2.1 BGP"></a>3.2.1 BGP</h3><p>BGP peer</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># frr command</span></span><br><span class="line">OpenWrt<span class="comment"># show bgp l2vpn evpn summ</span></span><br><span class="line">BGP router identifier 11.81.1.2, <span class="built_in">local</span> AS number 65000 vrf-id 0</span><br><span class="line">BGP table version 0</span><br><span class="line">RIB entries 3, using 384 bytes of memory</span><br><span class="line">Peers 1, using 10896 bytes of memory</span><br><span class="line">Peer groups 1, using 32 bytes of memory</span><br><span class="line"></span><br><span class="line">Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt</span><br><span class="line">11.1.1.1        4      65000      3090      3048        0    0    0 17:27:52            3        3</span><br><span class="line"></span><br><span class="line">Total number of neighbors 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>evpn BGP NLRI</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># frr command</span></span><br><span class="line">OpenWrt<span class="comment"># show bgp l2vpn evpn</span></span><br><span class="line">BGP table version is 15, <span class="built_in">local</span> router ID is 11.81.1.2</span><br><span class="line">Status codes: s suppressed, d damped, h <span class="built_in">history</span>, * valid, &gt; best, i - internal</span><br><span class="line">Origin codes: i - IGP, e - EGP, ? - incomplete</span><br><span class="line">EVPN type-1 prefix: [1]:[ESI]:[EthTag]:[IPlen]:[VTEP-IP]</span><br><span class="line">EVPN type-2 prefix: [2]:[EthTag]:[MAClen]:[MAC]:[IPlen]:[IP]</span><br><span class="line">EVPN type-3 prefix: [3]:[EthTag]:[IPlen]:[OrigIP]</span><br><span class="line">EVPN type-4 prefix: [4]:[ESI]:[IPlen]:[OrigIP]</span><br><span class="line">EVPN type-5 prefix: [5]:[EthTag]:[IPlen]:[IP]</span><br><span class="line"></span><br><span class="line">   Network          Next Hop            Metric LocPrf Weight Path</span><br><span class="line">Route Distinguisher: 11.1.1.1:10</span><br><span class="line">*&gt;i[2]:[10]:[48]:[e4:43:4b:f6:c5:56]</span><br><span class="line">                    11.1.1.1                      100      0 i</span><br><span class="line">                    RT:65000:10 ET:8</span><br><span class="line">*&gt;i[2]:[10]:[48]:[e4:43:4b:f6:c5:56]:[32]:[192.168.8.100]</span><br><span class="line">                    11.1.1.1                      100      0 i</span><br><span class="line">                    RT:65000:10 ET:8</span><br><span class="line">*&gt;i[3]:[10]:[32]:[11.1.1.1]</span><br><span class="line">                    11.1.1.1                      100      0 i</span><br><span class="line">                    RT:65000:10 ET:8</span><br><span class="line">Route Distinguisher: 11.81.1.2:2</span><br><span class="line">*&gt; [2]:[0]:[48]:[e4:43:4b:f6:c5:75]</span><br><span class="line">                    11.81.1.2                          32768 i</span><br><span class="line">                    ET:8 RT:65000:10</span><br><span class="line">*&gt; [2]:[0]:[48]:[e4:43:4b:f6:c5:75]:[32]:[192.168.8.10]</span><br><span class="line">                    11.81.1.2                          32768 i</span><br><span class="line">                    ET:8 RT:65000:10</span><br><span class="line">*&gt; [3]:[0]:[32]:[11.81.1.2]</span><br><span class="line">                    11.81.1.2                          32768 i</span><br><span class="line">                    ET:8 RT:65000:10</span><br><span class="line"></span><br><span class="line">Displayed 6 out of 6 total prefixes</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>evpn BGP advertised-routes</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># frr command</span></span><br><span class="line">OpenWrt<span class="comment"># show bgp l2vpn evpn neighbors 11.1.1.1 advertised-routes</span></span><br><span class="line">BGP table version is 0, <span class="built_in">local</span> router ID is 11.81.1.2</span><br><span class="line">Default <span class="built_in">local</span> pref 100, <span class="built_in">local</span> AS 65000</span><br><span class="line">Status codes: s suppressed, d damped, h <span class="built_in">history</span>, * valid, &gt; best, i - internal</span><br><span class="line">Origin codes: i - IGP, e - EGP, ? - incomplete</span><br><span class="line"></span><br><span class="line">   Network          Next Hop            Metric LocPrf Weight Path</span><br><span class="line">Route Distinguisher: 11.81.1.2:2</span><br><span class="line">*&gt; [2]:[0]:[48]:[e4:43:4b:f6:c5:75]</span><br><span class="line">                                  100  32768 i</span><br><span class="line">*&gt; [2]:[0]:[48]:[e4:43:4b:f6:c5:75]:[32]:[192.168.8.10]</span><br><span class="line">                                  100  32768 i</span><br><span class="line">*&gt; [3]:[0]:[32]:[11.81.1.2]</span><br><span class="line">                                  100  32768 i</span><br><span class="line"></span><br><span class="line">Total number of prefixes 3</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-2-Linux-forwarding-plane"><a href="#3-2-2-Linux-forwarding-plane" class="headerlink" title="3.2.2 Linux forwarding plane"></a>3.2.2 Linux forwarding plane</h3><p>bridge fdb</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># linux command</span></span><br><span class="line">root@OpenWrt:~<span class="comment"># bridge fdb | grep -E &#x27;vxlan|wan|lan1&#x27;</span></span><br><span class="line">e4:43:4b:f6:c5:75 dev lan1 master br-lan</span><br><span class="line">94:83:c4:16:51:45 dev lan1 vlan 1 master br-lan permanent</span><br><span class="line">94:83:c4:16:51:45 dev lan1 master br-lan permanent</span><br><span class="line">e4:43:4b:f6:c5:75 dev lan1 vlan 1 self</span><br><span class="line">c0:42:d0:08:9a:80 dev wan vlan 1 self</span><br><span class="line">1c:9c:8c:67:c3:44 dev wan vlan 1 self</span><br><span class="line">1c:9c:8c:68:e4:c0 dev wan vlan 1 self</span><br><span class="line">e4:43:4b:f6:c5:56 dev vxlan1 vlan 1 extern_learn master br-lan</span><br><span class="line">e4:43:4b:f6:c5:56 dev vxlan1 extern_learn master br-lan</span><br><span class="line">3e:dd:f3:a4:65:2b dev vxlan1 vlan 1 master br-lan permanent</span><br><span class="line">3e:dd:f3:a4:65:2b dev vxlan1 master br-lan permanent</span><br><span class="line">00:00:00:00:00:00 dev vxlan1 dst 11.1.1.1 self permanent</span><br><span class="line">e4:43:4b:f6:c5:56 dev vxlan1 dst 11.1.1.1 self extern_learn</span><br><span class="line">33:33:00:00:00:01 dev wlan1 self permanent</span><br><span class="line">33:33:00:00:00:02 dev wlan1 self permanent</span><br></pre></td></tr></table></figure>
+
+<p>00:00:00:00:00:00 dev vxlan1 dst 11.1.1.1 self permanent. is add by /lib/netifd/proto/vxlan.sh</p>
+<p>vxlan interface:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@OpenWrt:~<span class="comment"># ip -d link show vxlan1</span></span><br><span class="line">8: vxlan1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue master br-lan state UNKNOWN mode DEFAULT group default qlen 1000</span><br><span class="line">    link/ether 3e:dd:f3:a4:65:2b brd ff:ff:ff:ff:ff:ff promiscuity 1 minmtu 68 maxmtu 65535</span><br><span class="line">    vxlan id 10 <span class="built_in">local</span> 11.81.1.2 srcport 0 0 dstport 4789 ttl auto ageing 300 udpcsum noudp6zerocsumtx noudp6zerocsumrx</span><br><span class="line">    bridge_slave state forwarding priority 32 cost 100 hairpin off guard off root_block off fastleave off learning on flood on port_id 0x8003 port_no 0x3 designated_port 32771 designated_cost 0 designated_bridge 7fff.94:83:C4:16:51:45 designated_root 7fff.94:83:C4:16:51:45 hold_timer    0.00 message_age_timer    0.00 forward_delay_timer    0.00 topology_change_ack 0 config_pending 0 proxy_arp off proxy_arp_wifi off mcast_router 1 mcast_fast_leave off mcast_flood on mcast_to_unicast off neigh_suppress off group_fwd_mask 0 group_fwd_mask_str 0x0 vlan_tunnel off isolated off addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535</span><br></pre></td></tr></table></figure>
+
+<p>linux bridge:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@OpenWrt:~<span class="comment"># brctl show</span></span><br><span class="line">bridge name	bridge id		STP enabled	interfaces</span><br><span class="line">br-lan		7fff.9483c4165145	no		lan2</span><br><span class="line">							vxlan1</span><br><span class="line">							lan1</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-Throughput"><a href="#4-Throughput" class="headerlink" title="4. Throughput"></a>4. Throughput</h1><h2 id="4-1-Bidirection-1450-sizes"><a href="#4-1-Bidirection-1450-sizes" class="headerlink" title="4.1 Bidirection(1450 sizes)"></a>4.1 Bidirection(1450 sizes)</h2><p> <img src="./1644372431377.png" alt="1644372431377.png"></p>
+<h2 id="4-2-One-direction-1450-sizes"><a href="#4-2-One-direction-1450-sizes" class="headerlink" title="4.2 One direction(1450 sizes)"></a>4.2 One direction(1450 sizes)</h2><p> <img src="./1644372481487.png" alt="1644372481487.png"></p>
+<h2 id="4-3-Bidirection-256-sizes"><a href="#4-3-Bidirection-256-sizes" class="headerlink" title="4.3 Bidirection(256 sizes)"></a>4.3 Bidirection(256 sizes)</h2><p> <img src="./1644372647021.png" alt="1644372647021.png"></p>
+<h2 id="4-4-One-direction-256-sizes"><a href="#4-4-One-direction-256-sizes" class="headerlink" title="4.4 One direction(256 sizes)"></a>4.4 One direction(256 sizes)</h2><p> <img src="./1644372910007.png" alt="1644372910007.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/OpenWRT/" rel="tag"># OpenWRT</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/13/mellanox/switch/os-upgrade/" rel="prev" title="switch os upgrade with onie">
+                  <i class="fa fa-chevron-left"></i> switch os upgrade with onie
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xin Yu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
