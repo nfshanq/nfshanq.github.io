@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="查看当前浏览器访问公网时使用的 IPv4 或 IPv6 地址。">
+  <meta name="color-scheme" content="light dark">
+  <title>公网 IP 查询 · Xin Yu's Notes</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --background: #f3f5f8; --surface: #fff; --text: #15243b;
+      --muted: #58667b; --line: #dce3ec; --accent: #215bd6;
+      --soft: #edf3ff; --error: #b42318;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--background); color: var(--text);
+      font: 16px/1.7 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main { max-width: 760px; margin: 0 auto; padding: 48px 24px; }
+    a { color: var(--accent); text-underline-offset: 4px; }
+    .home { font-size: 14px; }
+    header { margin: 48px 0 28px; }
+    .eyebrow { margin: 0 0 8px; color: var(--muted); font-size: 12px; letter-spacing: .14em; }
+    h1 { margin: 0 0 8px; font-size: clamp(28px, 6vw, 38px); line-height: 1.3; }
+    header p { margin: 0; color: var(--muted); }
+    .card { padding: 32px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); }
+    .label { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
+    #ip {
+      display: block; font: 600 clamp(24px, 5vw, 36px)/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+      overflow-wrap: anywhere; user-select: all;
+    }
+    #status { min-height: 1.7em; margin: 12px 0 24px; color: var(--muted); font-size: 14px; }
+    #status.error { color: var(--error); }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    button {
+      min-height: 44px; padding: 9px 20px; border: 1px solid var(--line);
+      border-radius: 9px; background: var(--surface); color: var(--text);
+      font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+    }
+    #refresh { border-color: var(--accent); background: var(--accent); color: #fff; }
+    button:disabled { opacity: .55; cursor: default; }
+    button:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+    #copy-status { display: block; min-height: 1.7em; margin-top: 8px; color: var(--muted); font-size: 14px; }
+    aside { margin-top: 24px; padding: 20px 24px; background: var(--soft); border-radius: 12px; }
+    aside h2 { margin: 0 0 8px; font-size: 15px; }
+    aside p { margin: 8px 0; color: var(--muted); font-size: 14px; }
+    footer { margin-top: 28px; color: var(--muted); font-size: 12px; }
+    @media (max-width: 480px) {
+      main { padding: 24px 18px; } header { margin-top: 36px; } .card { padding: 24px; }
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #101722; --surface: #182231; --text: #e7edf7;
+        --muted: #acb9cd; --line: #334156; --accent: #3975ef;
+        --soft: #1a2b44; --error: #ffaaa0;
+      }
+      a { color: #93b8ff; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="home" href="/">← Xin Yu's Notes</a>
+    <header>
+      <p class="eyebrow">NETWORK TOOLS</p>
+      <h1>你的公网 IP 地址</h1>
+      <p>查看当前浏览器连接 IP 查询服务时使用的公网出口。</p>
+    </header>
+    <section class="card" aria-label="公网 IP 查询结果" aria-busy="true" id="result">
+      <p class="label">PUBLIC IP ADDRESS</p>
+      <div role="status" aria-live="polite" aria-atomic="true">
+        <code id="ip">正在查询…</code>
+        <p id="status">正在连接 IP 查询服务。</p>
+      </div>
+      <div class="actions">
+        <button id="refresh" type="button" disabled>重新查询</button>
+        <button id="copy" type="button" disabled>复制 IP</button>
+      </div>
+      <span id="copy-status" role="status"></span>
+      <noscript><p>请启用 JavaScript，以获取当前浏览器的公网 IP。</p></noscript>
+    </section>
+    <aside>
+      <h2>这个地址代表什么？</h2>
+      <p>结果可能是 IPv4 或 IPv6，取决于当前网络。它不是电脑的局域网地址。</p>
+      <p>使用代理或 VPN 时，通常显示它的出口 IP。分流设置可能让查询服务与其他网站看到不同的地址。</p>
+      <p>查询会连接第三方服务 ipify，该服务会看到此次请求的公网 IP。本页面不保存查询结果。</p>
+    </aside>
+    <footer>IP 查询服务：<a href="https://www.ipify.org/" target="_blank" rel="noopener noreferrer">ipify</a></footer>
+  </main>
+  <script>
+    "use strict";
+    const ipOutput = document.getElementById("ip");
+    const statusOutput = document.getElementById("status");
+    const copyStatus = document.getElementById("copy-status");
+    const result = document.getElementById("result");
+    const refreshButton = document.getElementById("refresh");
+    const copyButton = document.getElementById("copy");
+    let currentIP = "";
+    let loading = false;
+
+    async function requestIP(url) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      try {
+        const response = await fetch(url, {
+          signal: controller.signal,
+          cache: "no-store",
+          credentials: "omit",
+          referrerPolicy: "no-referrer"
+        });
+        if (!response.ok) throw new Error("IP service unavailable");
+        const data = await response.json();
+        if (typeof data.ip !== "string" || !/^[0-9a-f:.]{2,45}$/i.test(data.ip)) {
+          throw new Error("Invalid IP response");
+        }
+        return data.ip;
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+
+    async function lookupIP() {
+      if (loading) return;
+      loading = true;
+      currentIP = "";
+      refreshButton.disabled = true;
+      copyButton.disabled = true;
+      result.setAttribute("aria-busy", "true");
+      ipOutput.textContent = "正在查询…";
+      statusOutput.textContent = "正在连接 IP 查询服务。";
+      statusOutput.className = "";
+      copyStatus.textContent = "";
+      try {
+        try {
+          currentIP = await requestIP("https://api64.ipify.org?format=json");
+        } catch {
+          statusOutput.textContent = "正在尝试 IPv4 查询服务…";
+          currentIP = await requestIP("https://api.ipify.org?format=json");
+        }
+        ipOutput.textContent = currentIP;
+        const version = currentIP.includes(":") ? "IPv6" : "IPv4";
+        statusOutput.textContent = version + " · 更新于 " + new Date().toLocaleTimeString("zh-CN", { hour12: false });
+        copyButton.disabled = false;
+      } catch {
+        ipOutput.textContent = "暂时无法获取 IP";
+        statusOutput.textContent = "查询服务连接失败或超时，请检查网络后重新查询。";
+        statusOutput.className = "error";
+      } finally {
+        loading = false;
+        refreshButton.disabled = false;
+        result.setAttribute("aria-busy", "false");
+      }
+    }
+
+    refreshButton.addEventListener("click", lookupIP);
+    copyButton.addEventListener("click", async () => {
+      if (!currentIP) return;
+      const ipToCopy = currentIP;
+      try {
+        await navigator.clipboard.writeText(ipToCopy);
+        copyStatus.textContent = "已复制：" + ipToCopy;
+      } catch {
+        copyStatus.textContent = "无法访问剪贴板，请选中上方 IP 手动复制。";
+      }
+    });
+    lookupIP();
+  </script>
+</body>
+</html>
